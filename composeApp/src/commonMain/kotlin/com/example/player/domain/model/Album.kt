@@ -1,0 +1,20 @@
+package com.example.player.domain.model
+
+/**
+ * Represents an album in the music player.
+ *
+ * @property id The unique identifier of the album.
+ * @property title The title of the album.
+ * @property artist The artist of the album.
+ * @property year The year the album was released.
+ * @property artworkUrl The URL of the album artwork.
+ * @property trackCount The number of tracks in the album.
+ */
+data class Album(
+    val id: String,
+    val title: String,
+    val artist: Artist,
+    val year: Int? = null,
+    val artworkUrl: String? = null,
+    val trackCount: Int = 0
+)

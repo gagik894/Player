@@ -8,6 +8,7 @@ import com.example.player.data.repository.PlayerRepositoryImpl
 import com.example.player.domain.usecase.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlin.time.Duration
 
 class PlayerViewModel : ViewModel() {
 
@@ -113,7 +114,7 @@ class PlayerViewModel : ViewModel() {
         }
     }
     
-    private fun handleSeekTo(position: kotlin.time.Duration) {
+    private fun handleSeekTo(position: Duration) {
         viewModelScope.launch {
             try {
                 seekToPositionUseCase(position)

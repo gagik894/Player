@@ -13,4 +13,14 @@ data class Artist(
     val name: String,
     val imageUrl: String? = null,
     val bio: String? = null
-)
+){
+    companion object {
+        val sample: Artist
+            get() = Artist(
+                id = "1",
+                name = "Queen",
+                imageUrl = null,
+                bio = "Queen are a British rock band formed in London in 1970. Their classic line-up was Freddie Mercury (lead vocals, piano), Brian May (guitar, vocals), Roger Taylor (drums, vocals) and John Deacon (bass)."
+            )
+    }
+}

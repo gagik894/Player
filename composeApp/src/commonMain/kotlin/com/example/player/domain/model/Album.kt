@@ -17,4 +17,16 @@ data class Album(
     val year: Int? = null,
     val artworkUrl: String? = null,
     val trackCount: Int = 0
-)
+){
+    companion object {
+        val sample: Album
+            get() = Album(
+                id = "1",
+                title = "A Night at the Opera",
+                artist = Artist.sample,
+                year = 1975,
+                artworkUrl = null,
+                trackCount = 12
+            )
+    }
+}

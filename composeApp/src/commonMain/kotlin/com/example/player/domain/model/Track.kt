@@ -26,4 +26,43 @@ data class Track(
     val audioUrl: String,
     val isFavorite: Boolean = false,
     val trackNumber: Int? = null
-)
+){
+    companion object {
+        val sample: Track
+            get() = Track(
+                id = "1",
+                title = "Bohemian Rhapsody",
+                artist = Artist.sample,
+                album = Album.sample,
+                duration = Duration.parse("PT5M55S"),
+                artworkUrl = null,
+                audioUrl = "https://cdn.freesound.org/previews/828/828106_71257-lq.mp3",
+                isFavorite = false,
+                trackNumber = 1
+            )
+        val sample2: Track
+            get() = Track(
+                id = "2",
+                title = "Don't Stop Me Now",
+                artist = Artist.sample,
+                album = Album.sample,
+                duration = Duration.parse("PT3M29S"),
+                artworkUrl = null,
+                audioUrl = "https://cdn.freesound.org/previews/828/828106_71257-lq.mp3",
+                isFavorite = true,
+                trackNumber = 2
+            )
+        val sample3: Track
+            get() = Track(
+                id = "3",
+                title = "Somebody to Love",
+                artist = Artist.sample,
+                album = Album.sample,
+                duration = Duration.parse("PT4M56S"),
+                artworkUrl = null,
+                audioUrl = "https://cdn.freesound.org/previews/828/828106_71257-lq.mp3",
+                isFavorite = false,
+                trackNumber = 3
+            )
+    }
+}

@@ -1,22 +1,28 @@
 package com.example.player.domain.model
 
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 data class PlaybackState(
-    val currentTrack: Track? = null,
     val isPlaying: Boolean = false,
     val currentPosition: Duration = Duration.ZERO,
     val isShuffleEnabled: Boolean = false,
     val repeatMode: RepeatMode = RepeatMode.OFF,
     val queue: List<Track> = emptyList(),
     val currentTrackIndex: Int = -1
-){
+) {
+    // Computed property - always consistent with queue and index
+    val currentTrack: Track? 
+        get() = if (currentTrackIndex in queue.indices) {
+            queue[currentTrackIndex]
+        } else null
+        
     companion object {
         val sample: PlaybackState
             get() = PlaybackState(
-                currentTrack = Track.sample,
                 isPlaying = true,
-                currentPosition = Duration.parse("PT1M30S"),
+                currentPosition = 1.minutes + 30.seconds,
                 isShuffleEnabled = false,
                 repeatMode = RepeatMode.ALL,
                 queue = listOf(Track.sample, Track.sample2, Track.sample3),

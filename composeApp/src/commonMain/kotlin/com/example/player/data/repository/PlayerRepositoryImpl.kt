@@ -15,7 +15,6 @@ class PlayerRepositoryImpl(
     
     private val _playbackState = MutableStateFlow(
         PlaybackState(
-            currentTrack = mockDataSource.getTracks().firstOrNull(),
             queue = mockDataSource.getTracks(),
             currentTrackIndex = 0
         )
@@ -52,7 +51,6 @@ class PlayerRepositoryImpl(
         
         _playbackState.value = currentState.copy(
             currentTrackIndex = nextIndex,
-            currentTrack = currentState.queue.getOrNull(nextIndex),
             currentPosition = Duration.ZERO
         )
     }
@@ -67,7 +65,6 @@ class PlayerRepositoryImpl(
         
         _playbackState.value = currentState.copy(
             currentTrackIndex = previousIndex,
-            currentTrack = currentState.queue.getOrNull(previousIndex),
             currentPosition = Duration.ZERO
         )
     }

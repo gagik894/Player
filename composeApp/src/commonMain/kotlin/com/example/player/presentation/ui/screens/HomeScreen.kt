@@ -2,6 +2,7 @@ package com.example.player.presentation.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,12 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.player.navigation.PlayerDestination
 import com.example.player.presentation.mvi.HomeIntent
 import com.example.player.presentation.mvi.HomeViewModel
 import com.example.player.presentation.mvi.HomeViewState
 import com.example.player.presentation.mvi.PlaybackIntent
 import com.example.player.presentation.mvi.PlaybackViewModel
 import com.example.player.presentation.theme.PlayerTheme
+import com.example.player.presentation.ui.components.MiniPlayer
 import com.example.player.presentation.ui.components.common.ErrorState
 import com.example.player.presentation.ui.components.common.LoadingState
 import com.example.player.presentation.ui.components.homeScreen.FavoritesRow
@@ -39,7 +42,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
-    playbackViewModel: PlaybackViewModel
+    playbackViewModel: PlaybackViewModel,
+    onNavigateTo: (PlayerDestination) -> Unit = {},
 ) {
     val homeViewState by homeViewModel.viewState.collectAsStateWithLifecycle()
     val playbackViewState by playbackViewModel.viewState.collectAsStateWithLifecycle()
@@ -48,6 +52,27 @@ fun HomeScreen(
         modifier = modifier,
         topBar = {
             HomeTopBar()
+        },
+        bottomBar = {
+            Column {
+                if (playbackViewState.playbackState.currentTrack != null){
+                    MiniPlayer(
+                        title = playbackViewState.playbackState.currentTrack?.title ?: "",
+                        artistName = playbackViewState.playbackState.currentTrack?.artist?.name ?: "Unknown Artist",
+                        isPlaying = playbackViewState.playbackState.isPlaying,
+                        onPlayPauseClick = {
+                            playbackViewModel.handleIntent(PlaybackIntent.PlayPause)
+                        },
+                        onNextClick = {
+                            playbackViewModel.handleIntent(PlaybackIntent.SkipNext)
+                        },
+                        onExpandClick = {
+                            onNavigateTo(PlayerDestination.Player)
+                        },
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+            }
         }
     ) { paddingValues ->
         when {

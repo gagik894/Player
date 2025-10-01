@@ -15,10 +15,10 @@ import com.example.player.presentation.mvi.PlaybackIntent
 import com.example.player.presentation.mvi.PlaybackViewModel
 import com.example.player.presentation.mvi.PlaybackViewState
 import com.example.player.presentation.theme.PlayerTheme
+import com.example.player.presentation.ui.components.PlayerTopBar
 import com.example.player.presentation.ui.components.common.EmptyState
 import com.example.player.presentation.ui.components.common.ErrorState
 import com.example.player.presentation.ui.components.common.LoadingState
-import com.example.player.presentation.ui.components.PlayerTopBar
 import com.example.player.presentation.ui.layouts.HorizontalPlayerLayout
 import com.example.player.presentation.ui.layouts.VerticalPlayerLayout
 import org.jetbrains.compose.ui.tooling.preview.Preview

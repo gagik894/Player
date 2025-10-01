@@ -44,7 +44,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun MiniPlayer(
     title: String,
-    artist: String,
+    artistName: String,
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -128,7 +128,7 @@ fun MiniPlayer(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = artist,
+                        text = artistName,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -175,7 +175,7 @@ private fun MiniPlayerPreview() {
         var isPlaying by remember { mutableStateOf(true) }
         MiniPlayer(
             title = "Bohemian Rhapsody",
-            artist = "Queen",
+            artistName = "Queen",
             isPlaying = isPlaying,
             onPlayPauseClick = {
                 isPlaying = !isPlaying

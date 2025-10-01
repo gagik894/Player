@@ -142,12 +142,27 @@ class PlaybackViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 _viewState.update { currentState ->
-                    currentState.copy(
-                        playbackState = currentState.playbackState.copy(
-                            currentTrack = track,
-                            isPlaying = true
+                    val currentQueue = currentState.playbackState.queue
+                    val trackIndex = currentQueue.indexOfFirst { it.id == track.id }
+                    
+                    if (trackIndex != -1) {
+                        // Track exists in current queue
+                        currentState.copy(
+                            playbackState = currentState.playbackState.copy(
+                                currentTrackIndex = trackIndex,
+                                isPlaying = true
+                            )
                         )
-                    )
+                    } else {
+                        // Track not in queue, create new queue with this track
+                        currentState.copy(
+                            playbackState = currentState.playbackState.copy(
+                                queue = listOf(track),
+                                currentTrackIndex = 0,
+                                isPlaying = true
+                            )
+                        )
+                    }
                 }
             } catch (e: Exception) {
                 _viewState.update { it.copy(error = e.message) }
@@ -159,13 +174,20 @@ class PlaybackViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 toggleFavoriteUseCase(trackId)
-                // Update the current track if it's the one being favorited
+                // Update the track in the queue if it's the one being favorited
                 _viewState.update { currentState ->
                     val currentTrack = currentState.playbackState.currentTrack
                     if (currentTrack?.id == trackId) {
+                        val updatedQueue = currentState.playbackState.queue.map { track ->
+                            if (track.id == trackId) {
+                                track.copy(isFavorite = !track.isFavorite)
+                            } else {
+                                track
+                            }
+                        }
                         currentState.copy(
                             playbackState = currentState.playbackState.copy(
-                                currentTrack = currentTrack.copy(isFavorite = !currentTrack.isFavorite)
+                                queue = updatedQueue
                             )
                         )
                     } else {

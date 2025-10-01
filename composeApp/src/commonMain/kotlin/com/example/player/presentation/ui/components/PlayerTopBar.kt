@@ -1,6 +1,7 @@
 package com.example.player.presentation.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.QueueMusic
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,11 +20,20 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun PlayerTopBar(
     modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit = {},
     onQueueClicked: () -> Unit = {}
 ) {
     TopAppBar(
         modifier = modifier,
-        title = { Text("Player") },
+        title = { Text("Now Playing") },
+        navigationIcon = {
+            IconButton(onClick = onNavigateBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+        },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent
         ),

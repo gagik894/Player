@@ -2,20 +2,32 @@ package com.example.player.presentation.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.player.data.source.MockMusicDataSource
-import com.example.player.data.repository.MusicRepositoryImpl
-import com.example.player.data.repository.PlayerRepositoryImpl
+import com.example.player.di.RepositoryModule
+import com.example.player.domain.model.Track
 import com.example.player.domain.usecase.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
 
-class PlayerViewModel : ViewModel() {
 
-    private val mockDataSource = MockMusicDataSource()
-    private val musicRepository = MusicRepositoryImpl(mockDataSource)
-    private val playerRepository = PlayerRepositoryImpl(mockDataSource)
-    
+
+sealed interface PlaybackIntent {
+    data object PlayPause : PlaybackIntent
+    data object SkipNext : PlaybackIntent
+    data object SkipPrevious : PlaybackIntent
+    data object ToggleShuffle : PlaybackIntent
+    data object ToggleRepeat : PlaybackIntent
+    data class SeekTo(val position: Duration) : PlaybackIntent
+    data class PlayTrack(val track: Track) : PlaybackIntent
+    data class ToggleFavorite(val trackId: String) : PlaybackIntent
+}
+
+class PlaybackViewModel : ViewModel() {
+
+    // Shared repositories
+    private val playerRepository = RepositoryModule.playerRepository
+    private val musicRepository = RepositoryModule.musicRepository
+
     // Use cases
     private val getPlaybackStateUseCase = GetPlaybackStateUseCase(playerRepository)
     private val playPauseUseCase = PlayPauseUseCase(playerRepository)
@@ -24,23 +36,25 @@ class PlayerViewModel : ViewModel() {
     private val toggleShuffleUseCase = ToggleShuffleUseCase(playerRepository)
     private val toggleRepeatModeUseCase = ToggleRepeatModeUseCase(playerRepository)
     private val toggleFavoriteUseCase = ToggleFavoriteUseCase(musicRepository)
-    
-    private val _viewState = MutableStateFlow(PlayerViewState())
-    val viewState: StateFlow<PlayerViewState> = _viewState.asStateFlow()
+
+    // State
+    private val _viewState = MutableStateFlow(PlaybackViewState())
+    val viewState: StateFlow<PlaybackViewState> = _viewState.asStateFlow()
     
     init {
         observePlaybackState()
     }
     
-    fun handleIntent(intent: PlayerIntent) {
+    fun handleIntent(intent: PlaybackIntent) {
         when (intent) {
-            is PlayerIntent.PlayPause -> handlePlayPause()
-            is PlayerIntent.SkipNext -> handleSkipNext()
-            is PlayerIntent.SkipPrevious -> handleSkipPrevious()
-            is PlayerIntent.ToggleShuffle -> handleToggleShuffle()
-            is PlayerIntent.ToggleRepeat -> handleToggleRepeat()
-            is PlayerIntent.SeekTo -> handleSeekTo(intent.position)
-            is PlayerIntent.ToggleFavorite -> handleToggleFavorite(intent.trackId)
+            is PlaybackIntent.PlayPause -> handlePlayPause()
+            is PlaybackIntent.SkipNext -> handleSkipNext()
+            is PlaybackIntent.SkipPrevious -> handleSkipPrevious()
+            is PlaybackIntent.ToggleShuffle -> handleToggleShuffle()
+            is PlaybackIntent.ToggleRepeat -> handleToggleRepeat()
+            is PlaybackIntent.SeekTo -> handleSeekTo(intent.position)
+            is PlaybackIntent.PlayTrack -> handlePlayTrack(intent.track)
+            is PlaybackIntent.ToggleFavorite -> handleToggleFavorite(intent.trackId)
         }
     }
     
@@ -107,7 +121,7 @@ class PlayerViewModel : ViewModel() {
     private fun handleToggleRepeat() {
         viewModelScope.launch {
             try {
-                toggleRepeatModeUseCase(_viewState.value.repeatMode)
+                toggleRepeatModeUseCase(currentMode = _viewState.value.playbackState.repeatMode)
             } catch (e: Exception) {
                 _viewState.update { it.copy(error = e.message) }
             }
@@ -123,11 +137,41 @@ class PlayerViewModel : ViewModel() {
             }
         }
     }
-    
+
+    private fun handlePlayTrack(track: Track) {
+        viewModelScope.launch {
+            try {
+                _viewState.update { currentState ->
+                    currentState.copy(
+                        playbackState = currentState.playbackState.copy(
+                            currentTrack = track,
+                            isPlaying = true
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                _viewState.update { it.copy(error = e.message) }
+            }
+        }
+    }
+
     private fun handleToggleFavorite(trackId: String) {
         viewModelScope.launch {
             try {
                 toggleFavoriteUseCase(trackId)
+                // Update the current track if it's the one being favorited
+                _viewState.update { currentState ->
+                    val currentTrack = currentState.playbackState.currentTrack
+                    if (currentTrack?.id == trackId) {
+                        currentState.copy(
+                            playbackState = currentState.playbackState.copy(
+                                currentTrack = currentTrack.copy(isFavorite = !currentTrack.isFavorite)
+                            )
+                        )
+                    } else {
+                        currentState
+                    }
+                }
             } catch (e: Exception) {
                 _viewState.update { it.copy(error = e.message) }
             }

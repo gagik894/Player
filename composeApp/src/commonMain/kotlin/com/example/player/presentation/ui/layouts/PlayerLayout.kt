@@ -17,9 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.player.presentation.mvi.PlayerIntent
-import com.example.player.presentation.mvi.PlayerViewState
-import com.example.player.presentation.ui.components.ArtworkSection
+import com.example.player.presentation.mvi.PlaybackIntent
+import com.example.player.presentation.mvi.PlaybackViewState
+import com.example.player.presentation.ui.components.common.ArtworkSection
 import com.example.player.presentation.ui.components.ControlsSection
 import com.example.player.presentation.ui.components.ProgressSection
 import com.example.player.presentation.ui.components.TrackInfoSection
@@ -27,8 +27,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun VerticalPlayerLayout(
-    viewState: PlayerViewState,
-    onIntent: (PlayerIntent) -> Unit
+    viewState: PlaybackViewState,
+    onIntent: (PlaybackIntent) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -56,8 +56,8 @@ fun VerticalPlayerLayout(
 
 @Composable
 fun HorizontalPlayerLayout(
-    viewState: PlayerViewState,
-    onIntent: (PlayerIntent) -> Unit
+    viewState: PlaybackViewState,
+    onIntent: (PlaybackIntent) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -91,8 +91,8 @@ fun HorizontalPlayerLayout(
 @Composable
 private fun PlayerInfoAndControls(
     modifier: Modifier = Modifier,
-    viewState: PlayerViewState,
-    onIntent: (PlayerIntent) -> Unit
+    viewState: PlaybackViewState,
+    onIntent: (PlaybackIntent) -> Unit
 ) {
     val currentTrack = viewState.playbackState.currentTrack!!
 
@@ -102,7 +102,7 @@ private fun PlayerInfoAndControls(
             artist = currentTrack.artist.name,
             album = currentTrack.album.title,
             isFavorite = currentTrack.isFavorite,
-            onFavoriteClick = { onIntent(PlayerIntent.ToggleFavorite(currentTrack.id)) }
+            onFavoriteClick = { onIntent(PlaybackIntent.ToggleFavorite(currentTrack.id)) }
         )
 
         Spacer(modifier = Modifier.weight(1f, fill = false))
@@ -110,7 +110,7 @@ private fun PlayerInfoAndControls(
         ProgressSection(
             modifier = Modifier.fillMaxWidth(),
             currentPosition = viewState.progress,
-            onPositionChange = { onIntent(PlayerIntent.SeekTo(viewState.getDurationFromProgress(it))) },
+            onPositionChange = { onIntent(PlaybackIntent.SeekTo(viewState.getDurationFromProgress(it))) },
             currentTime = viewState.currentTime,
             totalTime = viewState.totalTime
         )
@@ -121,11 +121,11 @@ private fun PlayerInfoAndControls(
             isPlaying = viewState.playbackState.isPlaying,
             isShuffleEnabled = viewState.playbackState.isShuffleEnabled,
             repeatMode = viewState.playbackState.repeatMode,
-            onPlayPauseClick = { onIntent(PlayerIntent.PlayPause) },
-            onNextClick = { onIntent(PlayerIntent.SkipNext) },
-            onPreviousClick = { onIntent(PlayerIntent.SkipPrevious) },
-            onShuffleClick = { onIntent(PlayerIntent.ToggleShuffle) },
-            onRepeatClick = { onIntent(PlayerIntent.ToggleRepeat) }
+            onPlayPauseClick = { onIntent(PlaybackIntent.PlayPause) },
+            onNextClick = { onIntent(PlaybackIntent.SkipNext) },
+            onPreviousClick = { onIntent(PlaybackIntent.SkipPrevious) },
+            onShuffleClick = { onIntent(PlaybackIntent.ToggleShuffle) },
+            onRepeatClick = { onIntent(PlaybackIntent.ToggleRepeat) }
         )
     }
 }
@@ -133,7 +133,7 @@ private fun PlayerInfoAndControls(
 @Preview(showBackground = true)
 @Composable
 private fun VerticalPlayerLayoutPreview() {
-    val sampleViewState = PlayerViewState.sample
+    val sampleViewState = PlaybackViewState.sample
     VerticalPlayerLayout(
         viewState = sampleViewState,
         onIntent = {}
@@ -142,7 +142,7 @@ private fun VerticalPlayerLayoutPreview() {
 @Preview(showBackground = true, widthDp = 700, heightDp = 400)
 @Composable
 private fun HorizontalPlayerLayoutPreview() {
-    val sampleViewState = PlayerViewState.sample
+    val sampleViewState = PlaybackViewState.sample
     HorizontalPlayerLayout(
         viewState = sampleViewState,
         onIntent = {}

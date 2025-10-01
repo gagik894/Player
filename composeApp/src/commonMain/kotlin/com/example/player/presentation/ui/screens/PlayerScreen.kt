@@ -9,16 +9,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.player.presentation.mvi.PlayerIntent
-import com.example.player.presentation.mvi.PlayerViewModel
-import com.example.player.presentation.mvi.PlayerViewState
+import com.example.player.presentation.mvi.PlaybackIntent
+import com.example.player.presentation.mvi.PlaybackViewModel
+import com.example.player.presentation.mvi.PlaybackViewState
 import com.example.player.presentation.theme.PlayerTheme
-import com.example.player.presentation.ui.components.EmptyState
-import com.example.player.presentation.ui.components.ErrorState
-import com.example.player.presentation.ui.components.LoadingState
+import com.example.player.presentation.ui.components.common.EmptyState
+import com.example.player.presentation.ui.components.common.ErrorState
+import com.example.player.presentation.ui.components.common.LoadingState
 import com.example.player.presentation.ui.components.PlayerTopBar
 import com.example.player.presentation.ui.layouts.HorizontalPlayerLayout
 import com.example.player.presentation.ui.layouts.VerticalPlayerLayout
@@ -27,15 +26,18 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayerScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit = {},
+    playbackViewModel: PlaybackViewModel
 ) {
-    val viewModel = remember { PlayerViewModel() }
-    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
+    val viewState by playbackViewModel.viewState.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = modifier,
         topBar = {
-            PlayerTopBar()
+            PlayerTopBar(
+                onNavigateBack = onNavigateBack
+            )
         }
     ) { paddingValues ->
         when {
@@ -60,7 +62,7 @@ fun PlayerScreen(
 
             else -> PlayerContent(
                 viewState = viewState,
-                onIntent = viewModel::handleIntent,
+                onIntent = playbackViewModel::handleIntent,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
@@ -72,8 +74,8 @@ fun PlayerScreen(
 @Composable
 private fun PlayerContent(
     modifier: Modifier = Modifier,
-    viewState: PlayerViewState,
-    onIntent: (PlayerIntent) -> Unit,
+    viewState: PlaybackViewState,
+    onIntent: (PlaybackIntent) -> Unit,
 ) {
     Surface(
         modifier = modifier,
@@ -102,7 +104,7 @@ private fun PlayerContent(
 private fun PlayerScreenPreview() {
     PlayerTheme {
         PlayerContent(
-            viewState = PlayerViewState.sample,
+            viewState = PlaybackViewState.sample,
             onIntent = {},
             modifier = Modifier.fillMaxSize()
         )

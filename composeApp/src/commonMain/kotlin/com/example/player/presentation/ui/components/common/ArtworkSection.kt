@@ -1,4 +1,4 @@
-package com.example.player.presentation.ui.components
+package com.example.player.presentation.ui.components.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -28,12 +28,12 @@ fun ArtworkSection(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(1f),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(10),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(4.dp),
             contentAlignment = Alignment.Center
         ) {
             if (artworkUrl != null) {

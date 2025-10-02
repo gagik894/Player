@@ -118,15 +118,6 @@ class MockMusicDataSource {
             createdAt = 1627847260L,
             updatedAt = 1627847260L
         ),
-        Playlist(
-            id = "3",
-            name = "My Favorites",
-            description = "My personal collection of favorite songs",
-            tracks = listOf(sampleTracks[0], sampleTracks[1], sampleTracks[3], sampleTracks[4]),
-            coverUrl = null,
-            createdAt = 1627847260L,
-            updatedAt = 1627847260L
-        )
     )
     
     fun getTracks(): List<Track> = sampleTracks

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 class GetPlaylistsUseCase(
     private val musicRepository: MusicRepository
 ) {
-    operator fun invoke(): Flow<List<Playlist>> {
+    suspend operator fun invoke(): Flow<List<Playlist>> {
         return musicRepository.getAllPlaylists()
     }
 }

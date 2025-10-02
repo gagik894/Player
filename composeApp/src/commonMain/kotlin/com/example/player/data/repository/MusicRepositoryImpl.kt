@@ -39,8 +39,15 @@ class MusicRepositoryImpl(
         return MutableStateFlow(artists)
     }
 
-    override fun getAllPlaylists(): Flow<List<Playlist>> {
-        return MutableStateFlow(playlists)
+    override suspend fun getAllPlaylists(): Flow<List<Playlist>> {
+        return MutableStateFlow(playlists + listOf(
+            Playlist(
+                id = "favorites",
+                name = "Favorites",
+                description = "Your favorite tracks",
+                tracks = getFavoriteTracks()
+            )
+        ))
     }
 
     override suspend fun getTrackById(id: String): Track? {

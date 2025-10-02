@@ -4,7 +4,6 @@ import com.example.player.domain.model.PlaybackState
 import com.example.player.domain.model.RepeatMode
 import com.example.player.domain.model.Track
 import com.example.player.domain.player.PlatformPlayer
-import com.example.player.domain.player.createPlatformPlayer
 import com.example.player.domain.repository.PlayerRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +16,9 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-class PlayerRepositoryImpl : PlayerRepository {
-    private val platformPlayer: PlatformPlayer = createPlatformPlayer()
+class PlayerRepositoryImpl(
+    private val platformPlayer: PlatformPlayer
+) : PlayerRepository {
 
     // Backing state flow for playback state
     private val _playbackState = MutableStateFlow(PlaybackState())

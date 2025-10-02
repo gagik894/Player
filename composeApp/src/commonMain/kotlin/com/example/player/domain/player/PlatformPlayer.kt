@@ -1,5 +1,6 @@
 package com.example.player.domain.player
 
+import com.example.player.platform.PlatformContext
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.time.Duration
 
@@ -21,7 +22,7 @@ data class PlayerState(
  * Defines the common contract for a low-level media player. Each target platform
  * (Android, iOS, JS) must provide an 'actual' implementation of this class.
  */
-expect class PlatformPlayer() {
+expect class PlatformPlayer(platformContext: PlatformContext) {
 
     /**
      * A StateFlow that emits the current [PlayerState] of the player.

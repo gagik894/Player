@@ -32,7 +32,3 @@ data class PlaybackState(
             )
     }
 }
-
-enum class RepeatMode {
-    OFF, ALL, ONE
-}

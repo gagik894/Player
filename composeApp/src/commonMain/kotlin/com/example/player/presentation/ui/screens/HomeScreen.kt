@@ -34,7 +34,7 @@ import com.example.player.presentation.ui.components.common.ErrorState
 import com.example.player.presentation.ui.components.common.LoadingState
 import com.example.player.presentation.ui.components.homeScreen.FavoritesRow
 import com.example.player.presentation.ui.components.homeScreen.HomeTopBar
-import com.example.player.presentation.ui.components.homeScreen.TrackListItem
+import com.example.player.presentation.ui.components.common.TrackListItem
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)

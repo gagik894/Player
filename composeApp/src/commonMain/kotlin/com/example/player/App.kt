@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.player.navigation.PlayerDestination
 import com.example.player.presentation.mvi.HomeViewModel
 import com.example.player.presentation.mvi.PlaybackViewModel
+import com.example.player.presentation.mvi.QueueViewModel
 import com.example.player.presentation.theme.PlayerTheme
 import com.example.player.presentation.ui.screens.HomeScreen
 import com.example.player.presentation.ui.screens.PlayerScreen
@@ -28,7 +29,7 @@ fun App() {
         val navController = rememberNavController()
         val playbackViewModel = remember { PlaybackViewModel() }
         val homeViewModel = remember { HomeViewModel() }
-
+        val queueViewModel = remember { QueueViewModel() }
         NavHost(
             navController = navController,
             startDestination = PlayerDestination.Home
@@ -65,7 +66,7 @@ fun App() {
                     onNavigateBack = {
                         navController.popBackStack()
                     },
-
+                    queueViewModel = queueViewModel,
                     playbackViewModel = playbackViewModel
                 )
 

@@ -1,4 +1,4 @@
-package com.example.player.presentation.ui.components.homeScreen
+package com.example.player.presentation.ui.components.common
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
@@ -18,8 +18,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.player.domain.model.Track
 import com.example.player.presentation.theme.PlayerTheme
-import com.example.player.presentation.ui.components.common.ArtworkSection
-import com.example.player.presentation.ui.components.common.FavoriteButton
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

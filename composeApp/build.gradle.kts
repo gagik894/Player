@@ -42,6 +42,7 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.media3.exoplayer)
+            implementation(libs.androidx.media)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

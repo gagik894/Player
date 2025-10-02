@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.player.di.RepositoryModule
 import com.example.player.domain.model.Track
 import com.example.player.domain.usecase.*
+import com.example.player.platform.createMediaNotificationManager
+import com.example.player.platform.getPlatformContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
@@ -27,6 +29,7 @@ class PlaybackViewModel : ViewModel() {
     // Shared repositories
     private val playerRepository = RepositoryModule.playerRepository
     private val musicRepository = RepositoryModule.musicRepository
+    private val notificationManager = createMediaNotificationManager(getPlatformContext())
 
     // Use cases
     private val getPlaybackStateUseCase = GetPlaybackStateUseCase(playerRepository)
@@ -76,6 +79,7 @@ class PlaybackViewModel : ViewModel() {
                             error = null
                         )
                     }
+                    notificationManager.showOrUpdate(playbackState)
                 }
         }
     }
@@ -179,5 +183,10 @@ class PlaybackViewModel : ViewModel() {
                 _viewState.update { it.copy(error = e.message) }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        notificationManager.dismiss()
     }
 }

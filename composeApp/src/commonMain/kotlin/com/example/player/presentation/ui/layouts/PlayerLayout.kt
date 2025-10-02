@@ -112,7 +112,9 @@ private fun PlayerInfoAndControls(
             currentPosition = viewState.progress,
             onPositionChange = { onIntent(PlaybackIntent.SeekTo(viewState.getDurationFromProgress(it))) },
             currentTime = viewState.currentTime,
-            totalTime = viewState.totalTime
+            totalTime = viewState.totalTime,
+            totalDuration = viewState.playbackState.totalDuration,
+            isPlaying = viewState.playbackState.isPlaying
         )
 
         Spacer(modifier = Modifier.height(32.dp))

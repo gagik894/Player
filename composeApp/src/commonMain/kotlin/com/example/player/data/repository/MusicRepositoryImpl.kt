@@ -16,6 +16,7 @@ class MusicRepositoryImpl(
 
     private val albums = mockDataSource.getAlbums()
     private val artists = mockDataSource.getArtists()
+    private val playlists = mockDataSource.getPlaylists()
 
     init {
         _tracks.value = mockDataSource.getTracks()
@@ -39,7 +40,7 @@ class MusicRepositoryImpl(
     }
 
     override fun getAllPlaylists(): Flow<List<Playlist>> {
-        return MutableStateFlow(emptyList()) // Not implemented
+        return MutableStateFlow(playlists)
     }
 
     override suspend fun getTrackById(id: String): Track? {
@@ -55,7 +56,7 @@ class MusicRepositoryImpl(
     }
 
     override suspend fun getPlaylistById(id: String): Playlist? {
-        return null // Not implemented
+        return playlists.find { it.id == id }
     }
 
     override suspend fun getFavoriteTracks(): List<Track> {
@@ -93,5 +94,23 @@ class MusicRepositoryImpl(
         return artists.filter {
             it.name.contains(query, ignoreCase = true)
         }
+    }
+
+    override suspend fun searchPlaylists(query: String): List<Playlist> {
+        return playlists.filter {
+            it.name.contains(query, ignoreCase = true) ||
+                    it.description?.contains(query, ignoreCase = true) == true
+        }
+    }
+
+    override suspend fun getTracksByArtist(artistId: String): List<Track> {
+        return _tracks.value.filter { track ->
+            track.artist.id == artistId
+        }
+    }
+
+    override suspend fun getTracksByPlaylist(playlistId: String): List<Track> {
+        val playlist = playlists.find { it.id == playlistId }
+        return playlist?.tracks ?: emptyList()
     }
 }

@@ -51,7 +51,10 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            HomeTopBar()
+            HomeTopBar(
+                onArtistsClick = { onNavigateTo(PlayerDestination.Artists) },
+                onPlaylistsClick = { onNavigateTo(PlayerDestination.Playlists) }
+            )
         },
         bottomBar = {
             Column {
@@ -162,7 +165,7 @@ private fun HomeContent(
                 items(tracks) { track ->
                     TrackListItem(
                         track = track,
-                        isCurrentlyPlaying = playbackViewState.playbackState.currentTrack?.id == track.id,
+                        isSelected = playbackViewState.playbackState.currentTrack?.id == track.id,
                         isPlaying = playbackViewState.playbackState.isPlaying,
                         onClick = {
                             onPlaybackIntent(PlaybackIntent.PlayTrackFromContext(track, tracks))

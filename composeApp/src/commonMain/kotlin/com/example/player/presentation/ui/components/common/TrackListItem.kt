@@ -23,7 +23,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun TrackListItem(
     track: Track,
-    isCurrentlyPlaying: Boolean,
+    isSelected: Boolean,
     isPlaying: Boolean,
     onClick: () -> Unit,
     onFavoriteClick: () -> Unit,
@@ -31,17 +31,17 @@ fun TrackListItem(
 ) {
     // Animation for currently playing indicator
     val scaleAnimation by animateFloatAsState(
-        targetValue = if (isCurrentlyPlaying && isPlaying) 1.1f else 1f,
+        targetValue = if (isSelected && isPlaying) 1.1f else 1f,
         label = "playing_scale"
     )
     
-    val containerColor = if (isCurrentlyPlaying) {
+    val containerColor = if (isSelected) {
         MaterialTheme.colorScheme.surfaceVariant
     } else {
         MaterialTheme.colorScheme.surface
     }
 
-    val contentColor = if (isCurrentlyPlaying) {
+    val contentColor = if (isSelected) {
         MaterialTheme.colorScheme.onSurfaceVariant
     } else {
         MaterialTheme.colorScheme.onSurface
@@ -76,8 +76,8 @@ fun TrackListItem(
                 Text(
                     text = track.title,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = if (isCurrentlyPlaying) FontWeight.Bold else FontWeight.Medium,
-                    color = if (isCurrentlyPlaying) {
+                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                    color = if (isSelected) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         contentColor
@@ -102,7 +102,7 @@ fun TrackListItem(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                if (isCurrentlyPlaying) {
+                if (isSelected) {
                     Icon(
                         imageVector = if (isPlaying) Icons.AutoMirrored.Filled.VolumeUp else Icons.Default.Pause,
                         contentDescription = if (isPlaying) "Playing" else "Paused",
@@ -135,19 +135,26 @@ private fun TrackListItemPreview() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             
-            // Currently playing
+            //Selected Currently playing
             TrackListItem(
                 track = Track.sample,
-                isCurrentlyPlaying = true,
+                isSelected = true,
                 isPlaying = true,
                 onClick = {},
                 onFavoriteClick = {}
             )
-            
+            // Selected Paused
+            TrackListItem(
+                track = Track.sample,
+                isSelected = true,
+                isPlaying = false,
+                onClick = {},
+                onFavoriteClick = {}
+            )
             // Regular track
             TrackListItem(
                 track = Track.sample2,
-                isCurrentlyPlaying = false,
+                isSelected = false,
                 isPlaying = false,
                 onClick = {},
                 onFavoriteClick = {}

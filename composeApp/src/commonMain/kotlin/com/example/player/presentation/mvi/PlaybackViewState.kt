@@ -1,6 +1,7 @@
 package com.example.player.presentation.mvi
 
 import com.example.player.domain.model.PlaybackState
+import com.example.player.presentation.util.toTimeString
 import kotlin.time.Duration
 
 /**
@@ -18,9 +19,6 @@ data class PlaybackViewState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val playbackState: PlaybackState = PlaybackState(),
-    val progress: Float = 0f,
-    val currentTime: String = "0:00",
-    val totalTime: String = "0:00"
 ) {
     val isPlaying: Boolean get() = playbackState.isPlaying
 
@@ -32,6 +30,32 @@ data class PlaybackViewState(
             Duration.ZERO
         }
     }
+
+    val progress: Float
+        get() {
+            val currentTrack = playbackState.currentTrack
+            return if (currentTrack != null && currentTrack.duration.inWholeSeconds > 0) {
+                playbackState.currentPosition.inWholeSeconds.toFloat() / currentTrack.duration.inWholeSeconds.toFloat()
+            } else {
+                0f
+            }
+        }
+
+    val currentTime: String
+        get() {
+            val currentTrack = playbackState.currentTrack
+            return if (currentTrack != null) {
+                 playbackState.currentPosition.toTimeString()
+            } else {
+                "0:00"
+            }
+        }
+
+    val totalTime: String
+        get() {
+            val currentTrack = playbackState.currentTrack
+            return currentTrack?.formattedDuration ?: "0:00"
+        }
 
     companion object {
         val sample = PlaybackViewState(

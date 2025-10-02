@@ -14,5 +14,5 @@ object RepositoryModule {
     
     // Shared repository instances
     val musicRepository = MusicRepositoryImpl(mockDataSource)
-    val playerRepository = PlayerRepositoryImpl(mockDataSource)
+    val playerRepository = PlayerRepositoryImpl()
 }

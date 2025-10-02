@@ -1,5 +1,6 @@
 package com.example.player.domain.model
 
+import com.example.player.presentation.util.toTimeString
 import kotlin.time.Duration
 
 
@@ -27,6 +28,11 @@ data class Track(
     val isFavorite: Boolean = false,
     val trackNumber: Int? = null
 ){
+    val formattedDuration: String
+        get() {
+            return duration.toTimeString()
+        }
+
     companion object {
         val sample: Track
             get() = Track(

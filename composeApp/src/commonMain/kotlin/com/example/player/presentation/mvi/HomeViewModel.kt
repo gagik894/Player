@@ -9,8 +9,6 @@ import com.example.player.domain.usecase.ToggleFavoriteUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-
-
 sealed interface HomeIntent {
     data class SearchTracks(val query: String) : HomeIntent
     data class ToggleFavorite(val trackId: String) : HomeIntent
@@ -31,78 +29,45 @@ class HomeViewModel : ViewModel() {
     val viewState: StateFlow<HomeViewState> = _viewState.asStateFlow()
     
     init {
-        loadTracks()
+        observeTracks()
     }
-    
+
     fun handleIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.SearchTracks -> handleSearch(intent.query)
             is HomeIntent.ToggleFavorite -> handleToggleFavorite(intent.trackId)
-            is HomeIntent.LoadTracks -> loadTracks()
+            is HomeIntent.LoadTracks -> {  }
         }
     }
-    
-    private fun loadTracks() {
+
+    private fun observeTracks() {
         viewModelScope.launch {
-            _viewState.update { it.copy(isLoading = true) }
-            try {
-                getTracksUseCase()
-                    .catch { error ->
-                        _viewState.update { 
-                            it.copy(error = error.message, isLoading = false) 
-                        }
-                    }
-                    .collect { tracks ->
-                        _viewState.update {
-                            it.copy(
-                                tracks = tracks,
-                                favorites = tracks.filter { track ->  track.isFavorite },
-                                filteredTracks = filterTracks(tracks, it.searchQuery),
-                                isLoading = false,
-                                error = null
-                            )
-                        }
-                    }
-            } catch (e: Exception) {
-                _viewState.update { 
-                    it.copy(error = e.message, isLoading = false) 
+            getTracksUseCase()
+                .catch { error ->
+                    _viewState.update { it.copy(error = error.message, isLoading = false) }
                 }
-            }
+                .collect { allTracks ->
+                    _viewState.update { currentState ->
+                        currentState.copy(
+                            tracks = allTracks,
+                            favorites = allTracks.filter { track -> track.isFavorite },
+                            filteredTracks = filterTracks(allTracks, currentState.searchQuery),
+                            isLoading = false,
+                            error = null
+                        )
+                    }
+                }
         }
     }
-    
+
     private fun handleSearch(query: String) {
-        _viewState.update { currentState ->
-            currentState.copy(
-                searchQuery = query,
-                filteredTracks = filterTracks(currentState.tracks, query)
-            )
-        }
+        _viewState.update { it.copy(searchQuery = query) }
     }
-    
+
     private fun handleToggleFavorite(trackId: String) {
         viewModelScope.launch {
             try {
                 toggleFavoriteUseCase(trackId)
-                
-                _viewState.update { currentState ->
-                    val updatedTracks = currentState.tracks.map { track ->
-                        if (track.id == trackId) {
-                            track.copy(isFavorite = !track.isFavorite)
-                        } else {
-                            track
-                        }
-                    }
-                    
-                    val updatedFavorites = updatedTracks.filter { it.isFavorite }
-                    val updatedFilteredTracks = filterTracks(updatedTracks, currentState.searchQuery)
-
-                    currentState.copy(
-                        tracks = updatedTracks,
-                        favorites = updatedFavorites,
-                        filteredTracks = updatedFilteredTracks
-                    )
-                }
             } catch (e: Exception) {
                 _viewState.update { it.copy(error = e.message) }
             }

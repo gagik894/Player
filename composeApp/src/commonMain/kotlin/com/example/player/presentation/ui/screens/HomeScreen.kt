@@ -145,7 +145,7 @@ private fun HomeContent(
                         FavoritesRow(
                             tracks = homeViewState.favorites,
                             onTrackClick = { track ->
-                                onPlaybackIntent(PlaybackIntent.PlayTrack(track))
+                                onPlaybackIntent(PlaybackIntent.PlayTrackFromContext(track, homeViewState.favorites))
                             }
                         )
                     }
@@ -165,7 +165,7 @@ private fun HomeContent(
                         isCurrentlyPlaying = playbackViewState.playbackState.currentTrack?.id == track.id,
                         isPlaying = playbackViewState.playbackState.isPlaying,
                         onClick = {
-                            onPlaybackIntent(PlaybackIntent.PlayTrack(track))
+                            onPlaybackIntent(PlaybackIntent.PlayTrackFromContext(track, tracks))
                         },
                         onFavoriteClick = {
                             onHomeIntent(HomeIntent.ToggleFavorite(track.id))

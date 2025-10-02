@@ -23,4 +23,5 @@ interface MusicRepository {
     suspend fun searchTracks(query: String): List<Track>
     suspend fun searchAlbums(query: String): List<Album>
     suspend fun searchArtists(query: String): List<Artist>
+    fun getInitialTracks(): List<Track>
 }

@@ -18,7 +18,7 @@ sealed interface PlaybackIntent {
     data object ToggleShuffle : PlaybackIntent
     data object ToggleRepeat : PlaybackIntent
     data class SeekTo(val position: Duration) : PlaybackIntent
-    data class PlayTrack(val track: Track) : PlaybackIntent
+    data class PlayTrackFromContext(val track: Track, val context: List<Track>) : PlaybackIntent
     data class ToggleFavorite(val trackId: String) : PlaybackIntent
 }
 
@@ -36,6 +36,7 @@ class PlaybackViewModel : ViewModel() {
     private val toggleShuffleUseCase = ToggleShuffleUseCase(playerRepository)
     private val toggleRepeatModeUseCase = ToggleRepeatModeUseCase(playerRepository)
     private val toggleFavoriteUseCase = ToggleFavoriteUseCase(musicRepository)
+    private val setQueueUseCase = SetQueueUseCase(playerRepository)
 
     // State
     private val _viewState = MutableStateFlow(PlaybackViewState())
@@ -43,6 +44,8 @@ class PlaybackViewModel : ViewModel() {
     
     init {
         observePlaybackState()
+        observeMusicLibraryChanges()
+
     }
     
     fun handleIntent(intent: PlaybackIntent) {
@@ -53,7 +56,7 @@ class PlaybackViewModel : ViewModel() {
             is PlaybackIntent.ToggleShuffle -> handleToggleShuffle()
             is PlaybackIntent.ToggleRepeat -> handleToggleRepeat()
             is PlaybackIntent.SeekTo -> handleSeekTo(intent.position)
-            is PlaybackIntent.PlayTrack -> handlePlayTrack(intent.track)
+            is PlaybackIntent.PlayTrackFromContext -> handlePlayTrack(intent.track, intent.context)
             is PlaybackIntent.ToggleFavorite -> handleToggleFavorite(intent.trackId)
         }
     }
@@ -77,7 +80,27 @@ class PlaybackViewModel : ViewModel() {
                 }
         }
     }
-    
+
+    private fun observeMusicLibraryChanges() {
+        viewModelScope.launch {
+            musicRepository.getAllTracks().collect { allTracks ->
+                _viewState.update { currentState ->
+                    val currentQueue = currentState.playbackState.queue
+                    if (currentQueue.isEmpty()) return@update currentState // Don't do anything if not playing
+
+                    // Create an updated queue based on the latest data from the repository
+                    val updatedQueue = currentQueue.map { trackInQueue ->
+                        allTracks.find { it.id == trackInQueue.id } ?: trackInQueue
+                    }
+
+                    currentState.copy(
+                        playbackState = currentState.playbackState.copy(queue = updatedQueue)
+                    )
+                }
+            }
+        }
+    }
+
     private fun handlePlayPause() {
         viewModelScope.launch {
             try {
@@ -138,32 +161,11 @@ class PlaybackViewModel : ViewModel() {
         }
     }
 
-    private fun handlePlayTrack(track: Track) {
+    private fun handlePlayTrack(track: Track, context: List<Track>) {
         viewModelScope.launch {
             try {
-                _viewState.update { currentState ->
-                    val currentQueue = currentState.playbackState.queue
-                    val trackIndex = currentQueue.indexOfFirst { it.id == track.id }
-                    
-                    if (trackIndex != -1) {
-                        // Track exists in current queue
-                        currentState.copy(
-                            playbackState = currentState.playbackState.copy(
-                                currentTrackIndex = trackIndex,
-                                isPlaying = true
-                            )
-                        )
-                    } else {
-                        // Track not in queue, create new queue with this track
-                        currentState.copy(
-                            playbackState = currentState.playbackState.copy(
-                                queue = listOf(track),
-                                currentTrackIndex = 0,
-                                isPlaying = true
-                            )
-                        )
-                    }
-                }
+                val startIndex = context.indexOf(track).coerceAtLeast(0)
+                setQueueUseCase(context, startIndex)
             } catch (e: Exception) {
                 _viewState.update { it.copy(error = e.message) }
             }
@@ -174,26 +176,6 @@ class PlaybackViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 toggleFavoriteUseCase(trackId)
-                // Update the track in the queue if it's the one being favorited
-                _viewState.update { currentState ->
-                    val currentTrack = currentState.playbackState.currentTrack
-                    if (currentTrack?.id == trackId) {
-                        val updatedQueue = currentState.playbackState.queue.map { track ->
-                            if (track.id == trackId) {
-                                track.copy(isFavorite = !track.isFavorite)
-                            } else {
-                                track
-                            }
-                        }
-                        currentState.copy(
-                            playbackState = currentState.playbackState.copy(
-                                queue = updatedQueue
-                            )
-                        )
-                    } else {
-                        currentState
-                    }
-                }
             } catch (e: Exception) {
                 _viewState.update { it.copy(error = e.message) }
             }

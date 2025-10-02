@@ -2,6 +2,7 @@ package com.example.player.domain.model
 
 import com.example.player.presentation.util.toTimeString
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 
 /**

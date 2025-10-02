@@ -54,8 +54,8 @@ class MockMusicDataSource {
             title = "Bohemian Rhapsody",
             artist = sampleArtists[0],
             album = sampleAlbums[0],
-            duration = 5.minutes + 55.seconds,
-            audioUrl = "https://cdn.freesound.org/previews/828/828106_71257-lq.mp3",
+            duration = 7.seconds,
+            audioUrl = "https://cdn.freesound.org/previews/827/827736_17313276-lq.mp3",
             trackNumber = 1
         ),
         Track(
@@ -63,8 +63,8 @@ class MockMusicDataSource {
             title = "Love of My Life",
             artist = sampleArtists[0],
             album = sampleAlbums[0],
-            duration = 3.minutes + 38.seconds,
-            audioUrl = "mock://love_of_my_life.mp3",
+            duration = 55.seconds,
+            audioUrl = "https://cdn.freesound.org/previews/827/827647_13737430-lq.mp3",
             trackNumber = 2
         ),
         Track(
@@ -72,8 +72,8 @@ class MockMusicDataSource {
             title = "Come Together",
             artist = sampleArtists[1],
             album = sampleAlbums[1],
-            duration = 4.minutes + 20.seconds,
-            audioUrl = "mock://come_together.mp3",
+            duration = 8.seconds,
+            audioUrl = "https://cdn.freesound.org/previews/828/828106_71257-lq.mp3",
             trackNumber = 1
         ),
         Track(
@@ -81,8 +81,8 @@ class MockMusicDataSource {
             title = "Something",
             artist = sampleArtists[1],
             album = sampleAlbums[1],
-            duration = 3.minutes + 3.seconds,
-            audioUrl = "mock://something.mp3",
+            duration = 2.minutes + 25.seconds,
+            audioUrl = "https://cdn.freesound.org/previews/827/827225_843915-lq.mp3",
             trackNumber = 2
         ),
         Track(
@@ -90,7 +90,7 @@ class MockMusicDataSource {
             title = "Time",
             artist = sampleArtists[2],
             album = sampleAlbums[2],
-            duration = 7.minutes + 6.seconds,
+            duration =7.seconds,
             audioUrl = "https://cdn.freesound.org/previews/828/828106_71257-lq.mp3",
             trackNumber = 1
         )

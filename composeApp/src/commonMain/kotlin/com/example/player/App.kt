@@ -120,9 +120,7 @@ fun App() {
                 
                 ArtistDetailsScreen(
                     viewModel = artistDetailsViewModel,
-                    onTrackClick = { trackId ->
-                        // Handle track click - could navigate to player or start playing
-                    },
+                    playbackViewModel = playbackViewModel,
                     onBackClick = {
                         navController.popBackStack()
                     },
@@ -142,9 +140,7 @@ fun App() {
                 
                 PlaylistDetailsScreen(
                     viewModel = playlistDetailsViewModel,
-                    onTrackClick = { trackId ->
-                        // Handle track click - could navigate to player or start playing
-                    },
+                    playbackViewModel = playbackViewModel,
                     onBackClick = {
                         navController.popBackStack()
                     },

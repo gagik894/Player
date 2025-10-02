@@ -6,14 +6,16 @@ import kotlin.time.Duration.Companion.seconds
 
 data class PlaybackState(
     val isPlaying: Boolean = false,
+    val isBuffering: Boolean = false,
     val currentPosition: Duration = Duration.ZERO,
+    val totalDuration: Duration = Duration.ZERO,
+    val error: String? = null,
     val isShuffleEnabled: Boolean = false,
     val repeatMode: RepeatMode = RepeatMode.OFF,
     val queue: List<Track> = emptyList(),
     val currentTrackIndex: Int = -1
 ) {
-    // Computed property - always consistent with queue and index
-    val currentTrack: Track? 
+    val currentTrack: Track?
         get() = if (currentTrackIndex in queue.indices) {
             queue[currentTrackIndex]
         } else null

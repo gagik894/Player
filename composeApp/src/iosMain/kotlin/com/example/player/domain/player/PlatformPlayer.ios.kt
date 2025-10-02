@@ -59,7 +59,7 @@ actual class PlatformPlayer actual constructor(platformContext: PlatformContext)
             context = null
         )
 
-        val interval = CMTimeMakeWithSeconds(0.5, 1_000_000_000)
+        val interval = CMTimeMakeWithSeconds(0.25, 1_000_000_000) // Update every 250ms
         timeObserver = avPlayer?.addPeriodicTimeObserverForInterval(interval, null) { time ->
             val position = CMTimeGetSeconds(time)
             _playerState.update { it.copy(currentPosition = position.seconds) }

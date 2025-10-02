@@ -40,6 +40,13 @@ actual class PlatformPlayer actual constructor(platformContext: PlatformContext)
                 _playerState.update { it.copy(isBuffering = playbackState == Player.STATE_BUFFERING) }
             }
 
+            override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
+                if (!playWhenReady) {
+                    _playerState.update { it.copy(isPlaying = false) }
+                    stopPositionUpdates()
+                }
+            }
+
             override fun onPlayerError(error: PlaybackException) {
                 _playerState.update { it.copy(error = error.message ?: "Unknown ExoPlayer error") }
             }
@@ -85,7 +92,7 @@ actual class PlatformPlayer actual constructor(platformContext: PlatformContext)
                 _playerState.update {
                     it.copy(currentPosition = exoPlayer.currentPosition.milliseconds)
                 }
-                delay(500)
+                delay(250) // Update every 250ms - reasonable for data accuracy
             }
         }
     }

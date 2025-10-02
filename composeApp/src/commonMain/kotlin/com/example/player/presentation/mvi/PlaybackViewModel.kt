@@ -45,7 +45,6 @@ class PlaybackViewModel : ViewModel() {
     init {
         observePlaybackState()
         observeMusicLibraryChanges()
-
     }
     
     fun handleIntent(intent: PlaybackIntent) {

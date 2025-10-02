@@ -90,7 +90,7 @@ class MockMusicDataSource {
             title = "Time",
             artist = sampleArtists[2],
             album = sampleAlbums[2],
-            duration =7.seconds,
+            duration = 7.seconds,
             audioUrl = "https://cdn.freesound.org/previews/828/828106_71257-lq.mp3",
             trackNumber = 1
         )

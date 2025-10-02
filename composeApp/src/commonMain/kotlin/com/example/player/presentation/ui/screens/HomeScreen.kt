@@ -2,7 +2,6 @@ package com.example.player.presentation.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,12 +28,11 @@ import com.example.player.presentation.mvi.HomeViewState
 import com.example.player.presentation.mvi.PlaybackIntent
 import com.example.player.presentation.mvi.PlaybackViewModel
 import com.example.player.presentation.theme.PlayerTheme
-import com.example.player.presentation.ui.components.MiniPlayer
 import com.example.player.presentation.ui.components.common.ErrorState
 import com.example.player.presentation.ui.components.common.LoadingState
+import com.example.player.presentation.ui.components.common.TrackListItem
 import com.example.player.presentation.ui.components.homeScreen.FavoritesRow
 import com.example.player.presentation.ui.components.homeScreen.HomeTopBar
-import com.example.player.presentation.ui.components.common.TrackListItem
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,27 +54,6 @@ fun HomeScreen(
                 onPlaylistsClick = { onNavigateTo(PlayerDestination.Playlists) }
             )
         },
-        bottomBar = {
-            Column {
-                if (playbackViewState.playbackState.currentTrack != null){
-                    MiniPlayer(
-                        title = playbackViewState.playbackState.currentTrack?.title ?: "",
-                        artistName = playbackViewState.playbackState.currentTrack?.artist?.name ?: "Unknown Artist",
-                        isPlaying = playbackViewState.playbackState.isPlaying,
-                        onPlayPauseClick = {
-                            playbackViewModel.handleIntent(PlaybackIntent.PlayPause)
-                        },
-                        onNextClick = {
-                            playbackViewModel.handleIntent(PlaybackIntent.SkipNext)
-                        },
-                        onExpandClick = {
-                            onNavigateTo(PlayerDestination.Player)
-                        },
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                }
-            }
-        }
     ) { paddingValues ->
         when {
             homeViewState.isLoading -> LoadingState(

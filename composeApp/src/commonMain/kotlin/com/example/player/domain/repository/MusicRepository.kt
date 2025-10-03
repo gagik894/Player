@@ -28,4 +28,5 @@ interface MusicRepository {
     
     suspend fun getTracksByArtist(artistId: String): List<Track>
     suspend fun getTracksByPlaylist(playlistId: String): List<Track>
+    suspend fun getAlbumsByArtist(artistId: String): List<Album>
 }

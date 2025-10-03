@@ -22,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.player.di.RepositoryModule
+import com.example.player.domain.usecase.GetAlbumsByArtistUseCase
 import com.example.player.domain.usecase.GetArtistByIdUseCase
 import com.example.player.domain.usecase.GetPlaylistByIdUseCase
 import com.example.player.domain.usecase.GetTracksByArtistUseCase
@@ -45,6 +46,9 @@ import com.example.player.presentation.ui.screens.PlaylistDetailsScreen
 import com.example.player.presentation.ui.screens.PlaylistsScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+//hardcoded because of issue with navigation in multiplatform project (class.qualifiedName)
+private const val PLAYER_ROUTE = "com.example.player.navigation.PlayerDestination.Player"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
@@ -57,9 +61,8 @@ fun App() {
 
         val currentDestination by navController.currentBackStackEntryAsState()
         val currentRoute = currentDestination?.destination?.route
-        val shouldShowBottomBar = currentRoute?.startsWith(PlayerDestination.Player::class.qualifiedName.orEmpty()) == false
 
-
+        val shouldShowBottomBar = currentRoute != PLAYER_ROUTE
         val playbackViewState by playbackViewModel.viewState.collectAsStateWithLifecycle()
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -121,7 +124,7 @@ fun App() {
                     PlayerScreen(
                         modifier = Modifier.fillMaxSize(),
                         onNavigateBack = {
-                            navController.popBackStack()
+                            navController.navigateUp()
                         },
                         queueViewModel = queueViewModel,
                         playbackViewModel = playbackViewModel
@@ -137,6 +140,9 @@ fun App() {
                         onArtistClick = { artistId ->
                             navController.navigate(PlayerDestination.ArtistDetail(artistId))
                         },
+                        onNavigateBack = {
+                            navController.navigateUp()
+                        },
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -150,6 +156,9 @@ fun App() {
                         onPlaylistClick = { playlistId ->
                             navController.navigate(PlayerDestination.PlaylistDetail(playlistId))
                         },
+                        onNavigateBack = {
+                            navController.navigateUp()
+                        },
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -160,6 +169,7 @@ fun App() {
                         ArtistDetailsViewModel(
                             artistId = artistDetail.artistId,
                             getArtistByIdUseCase = GetArtistByIdUseCase(RepositoryModule.musicRepository),
+                            getAlbumsByArtistUseCase = GetAlbumsByArtistUseCase(RepositoryModule.musicRepository),
                             getTracksByArtistUseCase = GetTracksByArtistUseCase(RepositoryModule.musicRepository)
                         )
                     }
@@ -168,7 +178,7 @@ fun App() {
                         viewModel = artistDetailsViewModel,
                         playbackViewModel = playbackViewModel,
                         onBackClick = {
-                            navController.popBackStack()
+                            navController.navigateUp()
                         },
                         modifier = Modifier.fillMaxSize()
                     )
@@ -188,7 +198,7 @@ fun App() {
                         viewModel = playlistDetailsViewModel,
                         playbackViewModel = playbackViewModel,
                         onBackClick = {
-                            navController.popBackStack()
+                            navController.navigateUp()
                         },
                         modifier = Modifier.fillMaxSize()
                     )
@@ -196,7 +206,5 @@ fun App() {
                 }
             }
         }
-
-
     }
 }

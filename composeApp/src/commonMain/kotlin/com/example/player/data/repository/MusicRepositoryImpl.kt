@@ -120,4 +120,10 @@ class MusicRepositoryImpl(
         val playlist = playlists.find { it.id == playlistId }
         return playlist?.tracks ?: emptyList()
     }
+
+    override suspend fun getAlbumsByArtist(artistId: String): List<Album> {
+        return albums.filter { album ->
+            album.artist.id == artistId
+        }
+    }
 }

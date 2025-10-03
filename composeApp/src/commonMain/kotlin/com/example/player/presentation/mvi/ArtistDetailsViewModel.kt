@@ -2,8 +2,10 @@ package com.example.player.presentation.mvi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.player.domain.model.Album
 import com.example.player.domain.model.Artist
 import com.example.player.domain.model.Track
+import com.example.player.domain.usecase.GetAlbumsByArtistUseCase
 import com.example.player.domain.usecase.GetArtistByIdUseCase
 import com.example.player.domain.usecase.GetTracksByArtistUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +15,7 @@ import kotlinx.coroutines.launch
 
 data class ArtistDetailsViewState(
     val artist: Artist? = null,
+    val albums: List<Album> = emptyList(),
     val tracks: List<Track> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
@@ -21,6 +24,7 @@ data class ArtistDetailsViewState(
 class ArtistDetailsViewModel(
     private val artistId: String,
     private val getArtistByIdUseCase: GetArtistByIdUseCase,
+    private val getAlbumsByArtistUseCase: GetAlbumsByArtistUseCase,
     private val getTracksByArtistUseCase: GetTracksByArtistUseCase
 ) : ViewModel() {
 
@@ -28,19 +32,21 @@ class ArtistDetailsViewModel(
     val state: StateFlow<ArtistDetailsViewState> = _state.asStateFlow()
 
     init {
-        loadArtistAndTracks()
+        loadArtistData()
     }
 
-    private fun loadArtistAndTracks() {
+    private fun loadArtistData() {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
             
             try {
                 val artist = getArtistByIdUseCase(artistId)
+                val albums = getAlbumsByArtistUseCase(artistId)
                 val tracks = getTracksByArtistUseCase(artistId)
                 
                 _state.value = _state.value.copy(
                     artist = artist,
+                    albums = albums,
                     tracks = tracks,
                     isLoading = false
                 )

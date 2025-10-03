@@ -18,13 +18,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.player.presentation.ui.components.SearchBar
+import com.example.player.presentation.ui.components.common.PlayerTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,12 +39,14 @@ fun <T> GenericListScreen(
     onSearchQueryChange: (String) -> Unit,
     itemKey: (T) -> String,
     itemContent: @Composable (T) -> Unit,
+    onBack: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(title) }
+            PlayerTopAppBar(
+                title = title,
+                onBack = onBack
             )
         },
         modifier = modifier

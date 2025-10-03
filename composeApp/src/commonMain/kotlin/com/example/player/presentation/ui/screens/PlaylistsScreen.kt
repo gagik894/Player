@@ -13,6 +13,7 @@ import com.example.player.presentation.ui.layouts.GenericListScreen
 fun PlaylistsScreen(
     viewModel: PlaylistsViewModel,
     onPlaylistClick: (String) -> Unit,
+    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.viewState.collectAsState()
@@ -36,6 +37,7 @@ fun PlaylistsScreen(
                 onClick = { onPlaylistClick(playlist.id) }
             )
         },
+        onBack = onNavigateBack,
         modifier = modifier
     )
 }

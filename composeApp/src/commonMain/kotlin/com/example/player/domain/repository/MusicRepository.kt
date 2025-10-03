@@ -1,9 +1,9 @@
 package com.example.player.domain.repository
 
-import com.example.player.domain.model.Track
 import com.example.player.domain.model.Album
 import com.example.player.domain.model.Artist
 import com.example.player.domain.model.Playlist
+import com.example.player.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 
 interface MusicRepository {
@@ -29,4 +29,5 @@ interface MusicRepository {
     suspend fun getTracksByArtist(artistId: String): List<Track>
     suspend fun getTracksByPlaylist(playlistId: String): List<Track>
     suspend fun getAlbumsByArtist(artistId: String): List<Album>
+    suspend fun getTracksByAlbum(albumId: String): List<Track>
 }

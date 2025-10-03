@@ -75,7 +75,7 @@ fun TrackListItem(
                 modifier = Modifier
                     .size(48.dp)
                     .padding(start = 8.dp),
-                artworkUrl = track.album.artworkUrl
+                artworkUrl = track.artworkUrl
             )
             
             Column(

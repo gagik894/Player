@@ -45,6 +45,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun MiniPlayer(
     title: String,
     artistName: String,
+    artworkUrl: String? = null,
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -101,7 +102,7 @@ fun MiniPlayer(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ArtworkSection(
-                    artworkUrl = null,
+                    artworkUrl = artworkUrl,
                     modifier = Modifier.size(48.dp)
                 )
 

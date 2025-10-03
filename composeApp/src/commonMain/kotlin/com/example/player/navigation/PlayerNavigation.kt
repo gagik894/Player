@@ -23,4 +23,7 @@ sealed interface PlayerDestination {
     
     @Serializable
     data class PlaylistDetail(val playlistId: String) : PlayerDestination
+
+    @Serializable
+    data class AlbumDetail(val albumId: String) : PlayerDestination
 }

@@ -39,6 +39,7 @@ fun VerticalPlayerLayout(
         verticalArrangement = Arrangement.Center
     ) {
         ArtworkSection(
+            artworkUrl = viewState.playbackState.currentTrack?.artworkUrl,
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .aspectRatio(1f)
@@ -66,6 +67,7 @@ fun HorizontalPlayerLayout(
         horizontalArrangement = Arrangement.Center
     ) {
         ArtworkSection(
+            artworkUrl = viewState.playbackState.currentTrack?.artworkUrl,
             modifier = Modifier
                 .fillMaxHeight(0.75f)
                 .aspectRatio(1f)

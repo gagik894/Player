@@ -1,8 +1,11 @@
 package com.example.player.data.repository
 
-import com.example.player.domain.model.*
-import com.example.player.domain.repository.MusicRepository
 import com.example.player.data.source.MockMusicDataSource
+import com.example.player.domain.model.Album
+import com.example.player.domain.model.Artist
+import com.example.player.domain.model.Playlist
+import com.example.player.domain.model.Track
+import com.example.player.domain.repository.MusicRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -124,6 +127,12 @@ class MusicRepositoryImpl(
     override suspend fun getAlbumsByArtist(artistId: String): List<Album> {
         return albums.filter { album ->
             album.artist.id == artistId
+        }
+    }
+
+    override suspend fun getTracksByAlbum(albumId: String): List<Track> {
+        return _tracks.value.filter { track ->
+            track.album.id == albumId
         }
     }
 }

@@ -103,7 +103,6 @@ fun GenericDetailScreen(
                             LazyColumn(
                                 contentPadding = PaddingValues(
                                     horizontal = horizontalPadding,
-                                    vertical = 16.dp
                                 ),
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {

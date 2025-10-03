@@ -4,7 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.QueueMusic
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -20,11 +24,11 @@ import com.example.player.presentation.mvi.PlaybackViewModel
 import com.example.player.presentation.mvi.PlaybackViewState
 import com.example.player.presentation.mvi.QueueViewModel
 import com.example.player.presentation.theme.PlayerTheme
-import com.example.player.presentation.ui.components.PlayerTopBar
 import com.example.player.presentation.ui.components.QueueOverlay
 import com.example.player.presentation.ui.components.common.EmptyState
 import com.example.player.presentation.ui.components.common.ErrorState
 import com.example.player.presentation.ui.components.common.LoadingState
+import com.example.player.presentation.ui.components.common.PlayerTopAppBar
 import com.example.player.presentation.ui.layouts.HorizontalPlayerLayout
 import com.example.player.presentation.ui.layouts.VerticalPlayerLayout
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -45,9 +49,14 @@ fun PlayerScreen(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                PlayerTopBar(
-                    onNavigateBack = onNavigateBack,
-                    onQueueClicked = { isQueueVisible = true }
+                PlayerTopAppBar(
+                    title = viewState.playbackState.currentTrack?.title ?: "Player",
+                    onBack = onNavigateBack,
+                    actions = {
+                        IconButton(onClick = { isQueueVisible = true }) {
+                            Icon(Icons.AutoMirrored.Filled.QueueMusic, contentDescription = "Queue")
+                        }
+                    }
                 )
             }
         ) { paddingValues ->

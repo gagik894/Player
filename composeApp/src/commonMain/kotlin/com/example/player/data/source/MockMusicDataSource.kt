@@ -10,16 +10,19 @@ class MockMusicDataSource {
         Artist(
             id = "1",
             name = "Queen",
+            bio = "Queen are a British rock band formed in London in 1970.",
             imageUrl = null
         ),
         Artist(
             id = "2", 
             name = "The Beatles",
+            bio = "The Beatles were an English rock band formed in Liverpool in 1960.",
             imageUrl = null
         ),
         Artist(
             id = "3",
             name = "Pink Floyd",
+            bio = "Pink Floyd were an English rock band formed in London in 1965.",
             imageUrl = null
         )
     )
@@ -96,7 +99,29 @@ class MockMusicDataSource {
         )
     )
     
+    private val samplePlaylists = listOf(
+        Playlist(
+            id = "1",
+            name = "Classic Rock Hits",
+            description = "The best classic rock songs of all time",
+            tracks = listOf(sampleTracks[0], sampleTracks[2], sampleTracks[4]),
+            coverUrl = null,
+            createdAt = 1627847260L,
+            updatedAt =  1627847260L
+        ),
+        Playlist(
+            id = "2",
+            name = "Love Songs",
+            description = "Romantic tracks for special moments",
+            tracks = listOf(sampleTracks[1], sampleTracks[3]),
+            coverUrl = null,
+            createdAt = 1627847260L,
+            updatedAt = 1627847260L
+        ),
+    )
+    
     fun getTracks(): List<Track> = sampleTracks
     fun getAlbums(): List<Album> = sampleAlbums
     fun getArtists(): List<Artist> = sampleArtists
+    fun getPlaylists(): List<Playlist> = samplePlaylists
 }

@@ -10,8 +10,8 @@ interface MusicRepository {
     fun getAllTracks(): Flow<List<Track>>
     fun getAllAlbums(): Flow<List<Album>>
     fun getAllArtists(): Flow<List<Artist>>
-    fun getAllPlaylists(): Flow<List<Playlist>>
-    
+
+    suspend fun getAllPlaylists(): Flow<List<Playlist>>
     suspend fun getTrackById(id: String): Track?
     suspend fun getAlbumById(id: String): Album?
     suspend fun getArtistById(id: String): Artist?
@@ -23,5 +23,10 @@ interface MusicRepository {
     suspend fun searchTracks(query: String): List<Track>
     suspend fun searchAlbums(query: String): List<Album>
     suspend fun searchArtists(query: String): List<Artist>
+    suspend fun searchPlaylists(query: String): List<Playlist>
     fun getInitialTracks(): List<Track>
+    
+    suspend fun getTracksByArtist(artistId: String): List<Track>
+    suspend fun getTracksByPlaylist(playlistId: String): List<Track>
+    suspend fun getAlbumsByArtist(artistId: String): List<Album>
 }

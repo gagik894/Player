@@ -224,7 +224,7 @@ private fun QueueContent(
                     itemsIndexed(viewState.queue) { index, track ->
                         TrackListItem(
                             track = track,
-                            isCurrentlyPlaying = viewState.currentTrack?.id == track.id,
+                            isSelected = viewState.currentTrack?.id == track.id,
                             isPlaying = false,
                             onClick = { onTrackClick(track) },
                             onFavoriteClick = { onFavoriteClick(track) }

@@ -14,16 +14,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.player.navigation.PlayerDestination
-import com.example.player.presentation.mvi.HomeIntent
-import com.example.player.presentation.mvi.HomeViewModel
-import com.example.player.presentation.mvi.HomeViewState
-import com.example.player.presentation.mvi.PlaybackIntent
-import com.example.player.presentation.mvi.PlaybackViewModel
+import com.example.player.presentation.mvi.home.HomeIntent
+import com.example.player.presentation.mvi.home.HomeViewModel
+import com.example.player.presentation.mvi.home.HomeViewState
+import com.example.player.presentation.mvi.playBack.PlaybackIntent
+import com.example.player.presentation.mvi.playBack.PlaybackViewModel
+import com.example.player.presentation.mvi.playBack.PlaybackViewState
 import com.example.player.presentation.theme.PlayerTheme
 import com.example.player.presentation.ui.components.common.TrackListItem
 import com.example.player.presentation.ui.components.homeScreen.FavoritesRow
@@ -61,7 +61,7 @@ fun HomeScreen(
 private fun HomeContent(
     modifier: Modifier = Modifier,
     homeViewState: HomeViewState,
-    playbackViewState: com.example.player.presentation.mvi.PlaybackViewState,
+    playbackViewState: PlaybackViewState,
     onHomeIntent: (HomeIntent) -> Unit,
     onPlaybackIntent: (PlaybackIntent) -> Unit,
     onArtistsClick: () -> Unit = {},
@@ -133,9 +133,11 @@ private fun HomeContent(
 @Composable
 private fun HomeScreenPreview() {
     PlayerTheme {
-        HomeScreen(
-            homeViewModel = remember { HomeViewModel() },
-            playbackViewModel = remember { PlaybackViewModel() }
+        HomeContent(
+            homeViewState = HomeViewState.sample,
+            playbackViewState = PlaybackViewState.sample,
+            onHomeIntent = {},
+            onPlaybackIntent = {}
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.player.presentation.mvi
+package com.example.player.presentation.mvi.playLists
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

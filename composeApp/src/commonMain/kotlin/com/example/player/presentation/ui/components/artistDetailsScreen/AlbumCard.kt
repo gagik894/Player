@@ -1,4 +1,4 @@
-package com.example.player.presentation.ui.components.common
+package com.example.player.presentation.ui.components.artistDetailsScreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.player.domain.model.Album
 import com.example.player.presentation.theme.PlayerTheme
+import com.example.player.presentation.ui.components.common.ArtworkSection
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -57,7 +58,7 @@ fun AlbumCard(
                 text = album.title,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
 

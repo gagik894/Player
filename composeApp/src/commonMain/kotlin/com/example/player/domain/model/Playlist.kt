@@ -19,4 +19,16 @@ data class Playlist(
     val coverUrl: String? = null,
     val createdAt: Long = 0L,
     val updatedAt: Long = 0L
-)
+) {
+    companion object {
+        val sample = Playlist(
+            id = "playlist1",
+            name = "My Favorite Songs",
+            description = "A collection of my all-time favorite tracks.",
+            tracks = listOf(Track.sample, Track.sample2, Track.sample3),
+            coverUrl = "https://example.com/playlist_cover.jpg",
+            createdAt = 1625155200000,
+            updatedAt = 1625241600000
+        )
+    }
+}

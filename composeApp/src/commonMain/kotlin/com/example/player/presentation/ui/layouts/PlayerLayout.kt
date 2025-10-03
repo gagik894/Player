@@ -17,12 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.player.presentation.mvi.PlaybackIntent
-import com.example.player.presentation.mvi.PlaybackViewState
+import com.example.player.presentation.mvi.playBack.PlaybackIntent
+import com.example.player.presentation.mvi.playBack.PlaybackViewState
 import com.example.player.presentation.ui.components.common.ArtworkSection
-import com.example.player.presentation.ui.components.ControlsSection
-import com.example.player.presentation.ui.components.ProgressSection
-import com.example.player.presentation.ui.components.TrackInfoSection
+import com.example.player.presentation.ui.components.playerScreen.ControlsSection
+import com.example.player.presentation.ui.components.playerScreen.ProgressSection
+import com.example.player.presentation.ui.components.playerScreen.TrackInfoSection
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable

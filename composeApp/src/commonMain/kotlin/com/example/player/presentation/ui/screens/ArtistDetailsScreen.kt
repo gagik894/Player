@@ -1,13 +1,8 @@
 package com.example.player.presentation.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,43 +11,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.player.domain.model.Album
-import com.example.player.presentation.mvi.ArtistDetailsViewModel
-import com.example.player.presentation.mvi.PlaybackIntent
-import com.example.player.presentation.mvi.PlaybackViewModel
-import com.example.player.presentation.ui.components.common.AlbumCard
+import com.example.player.presentation.mvi.artistDetails.ArtistDetailsViewModel
+import com.example.player.presentation.mvi.artistDetails.ArtistDetailsViewState
+import com.example.player.presentation.mvi.playBack.PlaybackIntent
+import com.example.player.presentation.mvi.playBack.PlaybackViewModel
+import com.example.player.presentation.mvi.playBack.PlaybackViewState
+import com.example.player.presentation.theme.PlayerTheme
+import com.example.player.presentation.ui.components.artistDetailsScreen.AlbumsRow
 import com.example.player.presentation.ui.components.common.TrackListItem
 import com.example.player.presentation.ui.layouts.GenericDetailScreen
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@Composable
-fun AlbumsRow(
-    albums: List<Album>,
-    onAlbumClick: (Album) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    if (albums.isNotEmpty()) {
-        Column(modifier = modifier) {
-            Text(
-                text = "Albums",
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(horizontal = 4.dp)
-            ) {
-                items(
-                    items = albums,
-                    key = { it.id }
-                ) { album ->
-                    AlbumCard(
-                        album = album,
-                        onClick = { onAlbumClick(album) }
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun ArtistDetailsScreen(
@@ -64,7 +33,26 @@ fun ArtistDetailsScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val playbackState by playbackViewModel.viewState.collectAsState()
-    
+
+    ArtistDetailsContent(
+        state = state,
+        playbackState = playbackState,
+        onPlaybackIntent = playbackViewModel::handleIntent,
+        onBackClick = onBackClick,
+        onAlbumClick = onAlbumClick,
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun ArtistDetailsContent(
+    modifier: Modifier = Modifier,
+    state: ArtistDetailsViewState,
+    playbackState: PlaybackViewState,
+    onPlaybackIntent: (PlaybackIntent) -> Unit,
+    onBackClick: () -> Unit,
+    onAlbumClick: (Album) -> Unit = {},
+) {
     GenericDetailScreen(
         title = state.artist?.name ?: "Artist",
         tracks = state.tracks,
@@ -88,7 +76,14 @@ fun ArtistDetailsScreen(
         trackContent = { track ->
             TrackListItem(
                 track = track,
-                onClick = { playbackViewModel.handleIntent(PlaybackIntent.PlayTrackFromContext(track, state.tracks)) },
+                onClick = {
+                    onPlaybackIntent(
+                        PlaybackIntent.PlayTrackFromContext(
+                            track,
+                            state.tracks
+                        )
+                    )
+                },
                 isSelected = playbackState.playbackState.currentTrack?.id == track.id,
                 isPlaying = playbackState.isPlaying,
                 onFavoriteClick = { },
@@ -96,4 +91,20 @@ fun ArtistDetailsScreen(
         },
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun ArtistDetailsScreenPreview() {
+    val sampleArtistDetailsViewState = ArtistDetailsViewState.sample
+    val samplePlaybackViewState = PlaybackViewState.sample
+    PlayerTheme {
+        ArtistDetailsContent(
+            state = sampleArtistDetailsViewState,
+            playbackState = samplePlaybackViewState,
+            onPlaybackIntent = {},
+            onBackClick = {},
+            onAlbumClick = {}
+        )
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.player.presentation.ui.components
+package com.example.player.presentation.ui.components.playerScreen
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.example.player.presentation.theme.PlayerTheme
 import com.example.player.presentation.util.toTimeString
-import kotlin.time.Duration
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import kotlin.time.Duration
 
 @Composable
 fun ProgressSection(

@@ -1,22 +1,13 @@
-package com.example.player.presentation.mvi
+package com.example.player.presentation.mvi.playListDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.player.domain.model.Playlist
-import com.example.player.domain.model.Track
 import com.example.player.domain.usecase.GetPlaylistByIdUseCase
 import com.example.player.domain.usecase.GetTracksByPlaylistUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-data class PlaylistDetailsViewState(
-    val playlist: Playlist? = null,
-    val tracks: List<Track> = emptyList(),
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
 
 class PlaylistDetailsViewModel(
     private val playlistId: String,

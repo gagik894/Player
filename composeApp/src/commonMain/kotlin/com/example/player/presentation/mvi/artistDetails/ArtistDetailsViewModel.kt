@@ -1,10 +1,7 @@
-package com.example.player.presentation.mvi
+package com.example.player.presentation.mvi.artistDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.player.domain.model.Album
-import com.example.player.domain.model.Artist
-import com.example.player.domain.model.Track
 import com.example.player.domain.usecase.GetAlbumsByArtistUseCase
 import com.example.player.domain.usecase.GetArtistByIdUseCase
 import com.example.player.domain.usecase.GetTracksByArtistUseCase
@@ -12,14 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-data class ArtistDetailsViewState(
-    val artist: Artist? = null,
-    val albums: List<Album> = emptyList(),
-    val tracks: List<Track> = emptyList(),
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
 
 class ArtistDetailsViewModel(
     private val artistId: String,

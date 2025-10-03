@@ -1,4 +1,4 @@
-package com.example.player.presentation.mvi
+package com.example.player.presentation.mvi.playBack
 
 import com.example.player.domain.model.PlaybackState
 import com.example.player.presentation.util.toTimeString
@@ -58,7 +58,7 @@ data class PlaybackViewState(
 
     companion object {
         val sample = PlaybackViewState(
-            playbackState = PlaybackState.sample
+            playbackState = PlaybackState.sample,
         )
     }
 }

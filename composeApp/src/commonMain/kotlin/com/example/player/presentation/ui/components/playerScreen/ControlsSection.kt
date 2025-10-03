@@ -1,4 +1,4 @@
-package com.example.player.presentation.ui.components
+package com.example.player.presentation.ui.components.playerScreen
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState

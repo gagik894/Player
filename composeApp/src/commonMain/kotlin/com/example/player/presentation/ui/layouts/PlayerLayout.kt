@@ -28,7 +28,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun VerticalPlayerLayout(
     viewState: PlaybackViewState,
-    onIntent: (PlaybackIntent) -> Unit
+    onIntent: (PlaybackIntent) -> Unit,
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -49,7 +51,9 @@ fun VerticalPlayerLayout(
 
         PlayerInfoAndControls(
             viewState = viewState,
-            onIntent = onIntent
+            onIntent = onIntent,
+            onAlbumClick = onAlbumClick,
+            onArtistClick = onArtistClick,
         )
     }
 }
@@ -57,7 +61,9 @@ fun VerticalPlayerLayout(
 @Composable
 fun HorizontalPlayerLayout(
     viewState: PlaybackViewState,
-    onIntent: (PlaybackIntent) -> Unit
+    onIntent: (PlaybackIntent) -> Unit,
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -79,7 +85,9 @@ fun HorizontalPlayerLayout(
             modifier = Modifier
                 .weight(1f),
             viewState = viewState,
-            onIntent = onIntent
+            onIntent = onIntent,
+            onAlbumClick = onAlbumClick,
+            onArtistClick = onArtistClick
         )
     }
 }
@@ -93,7 +101,9 @@ fun HorizontalPlayerLayout(
 private fun PlayerInfoAndControls(
     modifier: Modifier = Modifier,
     viewState: PlaybackViewState,
-    onIntent: (PlaybackIntent) -> Unit
+    onIntent: (PlaybackIntent) -> Unit,
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {}
 ) {
     val currentTrack = viewState.playbackState.currentTrack
         ?: return // If there's no track, don't display anything
@@ -104,7 +114,9 @@ private fun PlayerInfoAndControls(
             artist = currentTrack.artist.name,
             album = currentTrack.album.title,
             isFavorite = currentTrack.isFavorite,
-            onFavoriteClick = { onIntent(PlaybackIntent.ToggleFavorite(currentTrack.id)) }
+            onFavoriteClick = { onIntent(PlaybackIntent.ToggleFavorite(currentTrack.id)) },
+            onAlbumClick = { onAlbumClick(currentTrack.album.id) },
+            onArtistClick = { onArtistClick(currentTrack.artist.id) },
         )
 
         Spacer(modifier = Modifier.weight(1f, fill = false))

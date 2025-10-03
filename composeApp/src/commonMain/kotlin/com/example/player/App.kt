@@ -151,7 +151,13 @@ fun App() {
                             navController.navigateUp()
                         },
                         queueViewModel = queueViewModel,
-                        playbackViewModel = playbackViewModel
+                        playbackViewModel = playbackViewModel,
+                        onAlbumClick = { albumId ->
+                            navController.navigate(PlayerDestination.AlbumDetail(albumId))
+                        },
+                        onArtistClick = { artistId ->
+                            navController.navigate(PlayerDestination.ArtistDetail(artistId))
+                        }
                     )
                 }
 

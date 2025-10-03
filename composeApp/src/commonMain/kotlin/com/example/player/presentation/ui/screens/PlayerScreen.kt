@@ -38,6 +38,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun PlayerScreen(
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit = {},
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {},
     playbackViewModel: PlaybackViewModel,
     queueViewModel: QueueViewModel
 ) {
@@ -83,6 +85,8 @@ fun PlayerScreen(
                 else -> PlayerContent(
                     viewState = viewState,
                     onIntent = playbackViewModel::handleIntent,
+                    onAlbumClick = onAlbumClick,
+                    onArtistClick = onArtistClick,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
@@ -114,6 +118,8 @@ private fun PlayerContent(
     modifier: Modifier = Modifier,
     viewState: PlaybackViewState,
     onIntent: (PlaybackIntent) -> Unit,
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {}
 ) {
     Surface(
         modifier = modifier,
@@ -125,12 +131,16 @@ private fun PlayerContent(
             if (isPortrait) {
                 VerticalPlayerLayout(
                     viewState = viewState,
-                    onIntent = onIntent
+                    onIntent = onIntent,
+                    onAlbumClick = onAlbumClick,
+                    onArtistClick = onArtistClick
                 )
             } else {
                 HorizontalPlayerLayout(
                     viewState = viewState,
-                    onIntent = onIntent
+                    onIntent = onIntent,
+                    onAlbumClick = onAlbumClick,
+                    onArtistClick = onArtistClick
                 )
             }
         }

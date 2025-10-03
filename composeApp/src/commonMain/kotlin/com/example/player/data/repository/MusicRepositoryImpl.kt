@@ -43,14 +43,16 @@ class MusicRepositoryImpl(
     }
 
     override suspend fun getAllPlaylists(): Flow<List<Playlist>> {
-        return MutableStateFlow(playlists + listOf(
+        return MutableStateFlow(
+            listOf(
             Playlist(
                 id = "favorites",
                 name = "Favorites",
                 description = "Your favorite tracks",
                 tracks = getFavoriteTracks()
             )
-        ))
+            ) + playlists
+        )
     }
 
     override suspend fun getTrackById(id: String): Track? {
@@ -66,6 +68,14 @@ class MusicRepositoryImpl(
     }
 
     override suspend fun getPlaylistById(id: String): Playlist? {
+        if (id == "favorites") {
+            return Playlist(
+                id = "favorites",
+                name = "Favorites",
+                description = "Your favorite tracks",
+                tracks = getFavoriteTracks()
+            )
+        }
         return playlists.find { it.id == id }
     }
 

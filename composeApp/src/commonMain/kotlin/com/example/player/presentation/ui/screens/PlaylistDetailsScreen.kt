@@ -29,7 +29,7 @@ fun PlaylistDetailsScreen(
         trackContent = { track ->
             TrackListItem(
                 track = track,
-                onClick = {playbackViewModel.handleIntent(PlaybackIntent.PlayTrackFromContext(track, state.tracks)) },
+                onClick = { playbackViewModel.handleIntent(PlaybackIntent.PlayTrackFromContext(track, state.tracks)) },
                 isSelected = playbackState.playbackState.currentTrack?.id == track.id,
                 isPlaying = playbackState.isPlaying,
                 onFavoriteClick = { },

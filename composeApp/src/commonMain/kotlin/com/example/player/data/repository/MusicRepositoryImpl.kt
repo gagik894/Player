@@ -130,6 +130,9 @@ class MusicRepositoryImpl(
     }
 
     override suspend fun getTracksByPlaylist(playlistId: String): List<Track> {
+        if (playlistId == "favorites") {
+            return getFavoriteTracks()
+        }
         val playlist = playlists.find { it.id == playlistId }
         return playlist?.tracks ?: emptyList()
     }

@@ -62,7 +62,7 @@ actual class PlatformPlayer actual constructor(platformContext: PlatformContext)
         playerItem?.let { item ->
             when (item.status) {
                 AVPlayerItemStatusReadyToPlay -> {
-                    val duration = item.duration()?.let { CMTimeGetSeconds(it) } ?: 0.0
+                    val duration = item.duration().let { CMTimeGetSeconds(it) }
                     _playerState.update {
                         if (it.totalDuration == Duration.ZERO) {
                             // Only update once when first ready

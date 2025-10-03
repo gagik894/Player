@@ -42,10 +42,10 @@ import com.example.player.presentation.mvi.album.AlbumDetailsViewModel
 import com.example.player.presentation.mvi.artistDetails.ArtistDetailsViewModel
 import com.example.player.presentation.mvi.artists.ArtistsViewModel
 import com.example.player.presentation.mvi.home.HomeViewModel
-import com.example.player.presentation.mvi.playBack.PlaybackIntent
-import com.example.player.presentation.mvi.playBack.PlaybackViewModel
 import com.example.player.presentation.mvi.playListDetails.PlaylistDetailsViewModel
 import com.example.player.presentation.mvi.playLists.PlaylistsViewModel
+import com.example.player.presentation.mvi.playback.PlaybackIntent
+import com.example.player.presentation.mvi.playback.PlaybackViewModel
 import com.example.player.presentation.mvi.queue.QueueViewModel
 import com.example.player.presentation.theme.PlayerTheme
 import com.example.player.presentation.ui.components.MiniPlayer

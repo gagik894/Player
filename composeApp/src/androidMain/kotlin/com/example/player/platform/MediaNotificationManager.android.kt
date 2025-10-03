@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.core.content.ContextCompat
 import com.example.player.domain.model.PlaybackState
 import com.example.player.playback.PlaybackService
-import com.example.player.presentation.mvi.PlaybackIntent
+import com.example.player.presentation.mvi.playback.PlaybackIntent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

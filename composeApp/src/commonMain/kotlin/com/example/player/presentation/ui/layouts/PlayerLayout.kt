@@ -17,8 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.player.presentation.mvi.playBack.PlaybackIntent
-import com.example.player.presentation.mvi.playBack.PlaybackViewState
+import com.example.player.presentation.mvi.playback.PlaybackIntent
+import com.example.player.presentation.mvi.playback.PlaybackViewState
 import com.example.player.presentation.ui.components.common.ArtworkSection
 import com.example.player.presentation.ui.components.playerScreen.ControlsSection
 import com.example.player.presentation.ui.components.playerScreen.ProgressSection

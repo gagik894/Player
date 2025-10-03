@@ -1,13 +1,9 @@
-package com.example.player.presentation.mvi.playBack
+package com.example.player.presentation.mvi.playback
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.player.di.RepositoryModule
 import com.example.player.domain.model.Track
-import com.example.player.domain.usecase.*
-import com.example.player.platform.createMediaNotificationManager
-import com.example.player.platform.getPlatformContext
-import kotlinx.coroutines.flow.*
 import com.example.player.domain.usecase.GetPlaybackStateUseCase
 import com.example.player.domain.usecase.PlayFromContextUseCase
 import com.example.player.domain.usecase.PlayPauseUseCase
@@ -16,6 +12,8 @@ import com.example.player.domain.usecase.SkipTrackUseCase
 import com.example.player.domain.usecase.ToggleFavoriteUseCase
 import com.example.player.domain.usecase.ToggleRepeatModeUseCase
 import com.example.player.domain.usecase.ToggleShuffleUseCase
+import com.example.player.platform.createMediaNotificationManager
+import com.example.player.platform.getPlatformContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -21,9 +21,9 @@ import com.example.player.navigation.PlayerDestination
 import com.example.player.presentation.mvi.home.HomeIntent
 import com.example.player.presentation.mvi.home.HomeViewModel
 import com.example.player.presentation.mvi.home.HomeViewState
-import com.example.player.presentation.mvi.playBack.PlaybackIntent
-import com.example.player.presentation.mvi.playBack.PlaybackViewModel
-import com.example.player.presentation.mvi.playBack.PlaybackViewState
+import com.example.player.presentation.mvi.playback.PlaybackIntent
+import com.example.player.presentation.mvi.playback.PlaybackViewModel
+import com.example.player.presentation.mvi.playback.PlaybackViewState
 import com.example.player.presentation.theme.PlayerTheme
 import com.example.player.presentation.ui.components.common.TrackListItem
 import com.example.player.presentation.ui.components.homeScreen.FavoritesRow

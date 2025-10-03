@@ -1,4 +1,4 @@
-package com.example.player.presentation.mvi
+package com.example.player.presentation.mvi.queue
 
 import com.example.player.domain.model.Track
 

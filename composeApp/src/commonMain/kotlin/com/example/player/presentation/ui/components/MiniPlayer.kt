@@ -13,11 +13,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SkipNext
@@ -26,7 +26,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,12 +38,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.player.presentation.theme.PlayerTheme
+import com.example.player.presentation.ui.components.common.ArtworkSection
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun MiniPlayer(
     title: String,
     artistName: String,
+    artworkUrl: String? = null,
     isPlaying: Boolean,
     onPlayPauseClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -75,7 +76,11 @@ fun MiniPlayer(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
         )
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .navigationBarsPadding()
+                .fillMaxWidth()
+        ) {
             // Playing indicator strip
             Box(
                 modifier = Modifier
@@ -96,22 +101,10 @@ fun MiniPlayer(
                     .padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Artwork placeholder with playing indicator
-                Surface(
-                    modifier = Modifier.size(48.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant
-                ) {
-                    //TODO: Replace with actual artwork
-                    Box(contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = Icons.Default.MusicNote,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
+                ArtworkSection(
+                    artworkUrl = artworkUrl,
+                    modifier = Modifier.size(48.dp)
+                )
 
                 // Track info
                 Column(
@@ -139,7 +132,7 @@ fun MiniPlayer(
                 // Controls
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     IconButton(
                         onClick = onPlayPauseClick,

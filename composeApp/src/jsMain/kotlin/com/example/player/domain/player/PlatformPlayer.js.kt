@@ -87,6 +87,7 @@ actual class PlatformPlayer actual constructor(platformContext: PlatformContext)
 
     actual fun release() {
         pause()
+        stopPositionTimer()
         audio.src = ""
     }
 }

@@ -48,14 +48,37 @@ class PlayerRepositoryImpl(
                 }
 
                 // Handle automatic track transitions when a song finishes.
-                val isFinished = !playerState.isPlaying && playerState.currentPosition > Duration.ZERO &&
-                        playerState.currentPosition >= playerState.totalDuration
+                val isFinished = !playerState.isPlaying &&
+                        playerState.currentPosition > Duration.ZERO &&
+                        playerState.totalDuration.isFinite() &&
+                        (playerState.currentPosition >= playerState.totalDuration - 0.5.seconds)
 
                 if (isFinished) {
                     handleTrackFinished()
                 }
             }
         }
+    }
+
+    override suspend fun playFromContext(trackId: String, tracks: List<Track>) {
+        originalQueue = tracks
+        val startIndex = tracks.indexOfFirst { it.id == trackId }.takeIf { it >= 0 } ?: 0
+
+        _playbackState.update {
+            val queue = if (it.isShuffleEnabled) {
+                val selectedTrack = tracks[startIndex]
+                val remainingTracks = tracks.toMutableList().apply { removeAt(startIndex) }
+                listOf(selectedTrack) + remainingTracks.shuffled()
+            } else {
+                tracks
+            }
+
+            it.copy(
+                queue = queue,
+                currentTrackIndex = if (it.isShuffleEnabled) 0 else startIndex
+            )
+        }
+        playTrackAtIndex(if (_playbackState.value.isShuffleEnabled) 0 else startIndex)
     }
 
     override suspend fun setQueue(tracks: List<Track>, startIndex: Int) {
@@ -172,9 +195,11 @@ class PlayerRepositoryImpl(
                 seekTo(Duration.ZERO)
                 play()
             }
+
             RepeatMode.ALL -> {
                 skipToNext()
             }
+
             RepeatMode.OFF -> {
                 // If it's the last track in the queue, stop. Otherwise, play the next one.
                 if (currentState.currentTrackIndex < currentState.queue.size - 1) {

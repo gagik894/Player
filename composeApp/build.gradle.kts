@@ -43,6 +43,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.media3.exoplayer)
             implementation(libs.androidx.media)
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -58,9 +59,23 @@ kotlin {
             implementation(libs.androidx.navigation.compose)
             implementation(libs.androidx.compose.animation)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.ktor.core)
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil.mp)
+            implementation(libs.coil.network.ktor)
+            implementation(libs.coil.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
+        jsMain.dependencies {
+            implementation(libs.ktor.client.js)
+        }
+        wasmJsMain.dependencies {
+            implementation(libs.ktor.client.js)
         }
     }
 }

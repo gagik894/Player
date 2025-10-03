@@ -28,5 +28,14 @@ data class Album(
                 artworkUrl = null,
                 trackCount = 12
             )
+        val sample2: Album
+            get() = Album(
+                id = "2",
+                title = "The Dark Side of the Moon",
+                artist = Artist.sample2,
+                year = 1973,
+                artworkUrl = null,
+                trackCount = 10
+            )
     }
 }

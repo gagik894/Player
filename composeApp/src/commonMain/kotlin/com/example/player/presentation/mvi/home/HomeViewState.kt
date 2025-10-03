@@ -1,4 +1,4 @@
-package com.example.player.presentation.mvi
+package com.example.player.presentation.mvi.home
 
 import com.example.player.domain.model.Track
 
@@ -19,4 +19,24 @@ data class HomeViewState(
     val favorites: List<Track> = emptyList(),
     val searchQuery: String = "",
     val filteredTracks: List<Track> = emptyList()
-)
+) {
+    companion object {
+        val Empty = HomeViewState()
+        val Loading = HomeViewState(isLoading = true)
+        val Error = HomeViewState(error = "An error occurred")
+        val sample = HomeViewState(
+            isLoading = false,
+            error = null,
+            tracks = listOf(
+                Track.sample,
+                Track.sample2,
+                Track.sample3
+            ),
+            favorites = listOf(
+                Track.sample3
+            ),
+            searchQuery = "",
+            filteredTracks = emptyList()
+        )
+    }
+}

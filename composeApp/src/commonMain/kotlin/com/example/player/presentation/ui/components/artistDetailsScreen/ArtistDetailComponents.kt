@@ -1,4 +1,4 @@
-package com.example.player.presentation.ui.components.homeScreen
+package com.example.player.presentation.ui.components.artistDetailsScreen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,19 +12,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.player.domain.model.Track
-
+import com.example.player.domain.model.Album
 
 @Composable
-fun FavoritesRow(
-    tracks: List<Track>,
-    onTrackClick: (Track) -> Unit,
-    modifier: Modifier = Modifier,
+fun AlbumsRow(
+    albums: List<Album>,
+    onAlbumClick: (Album) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    if (tracks.isNotEmpty()) {
+    if (albums.isNotEmpty()) {
         Column(modifier = modifier) {
             Text(
-                text = "Your Favorites",
+                text = "Albums",
                 style = MaterialTheme.typography.titleMedium,
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -33,12 +32,12 @@ fun FavoritesRow(
                 contentPadding = PaddingValues(horizontal = 4.dp)
             ) {
                 items(
-                    items = tracks,
+                    items = albums,
                     key = { it.id }
                 ) { album ->
-                    FavoriteTrackCard(
-                        track = album,
-                        onClick = { onTrackClick(album) }
+                    AlbumCard(
+                        album = album,
+                        onClick = { onAlbumClick(album) }
                     )
                 }
             }

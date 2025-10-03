@@ -1,4 +1,4 @@
-package com.example.player.presentation.ui.components
+package com.example.player.presentation.ui.components.playerScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
@@ -46,7 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.player.domain.model.Track
-import com.example.player.presentation.mvi.QueueViewState
+import com.example.player.presentation.mvi.queue.QueueViewState
 import com.example.player.presentation.theme.PlayerTheme
 import com.example.player.presentation.ui.components.common.TrackListItem
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -224,7 +224,7 @@ private fun QueueContent(
                     itemsIndexed(viewState.queue) { index, track ->
                         TrackListItem(
                             track = track,
-                            isCurrentlyPlaying = viewState.currentTrack?.id == track.id,
+                            isSelected = viewState.currentTrack?.id == track.id,
                             isPlaying = false,
                             onClick = { onTrackClick(track) },
                             onFavoriteClick = { onFavoriteClick(track) }

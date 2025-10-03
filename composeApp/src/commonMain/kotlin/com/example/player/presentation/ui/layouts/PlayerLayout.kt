@@ -17,18 +17,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.player.presentation.mvi.PlaybackIntent
-import com.example.player.presentation.mvi.PlaybackViewState
+import com.example.player.presentation.mvi.playBack.PlaybackIntent
+import com.example.player.presentation.mvi.playBack.PlaybackViewState
 import com.example.player.presentation.ui.components.common.ArtworkSection
-import com.example.player.presentation.ui.components.ControlsSection
-import com.example.player.presentation.ui.components.ProgressSection
-import com.example.player.presentation.ui.components.TrackInfoSection
+import com.example.player.presentation.ui.components.playerScreen.ControlsSection
+import com.example.player.presentation.ui.components.playerScreen.ProgressSection
+import com.example.player.presentation.ui.components.playerScreen.TrackInfoSection
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun VerticalPlayerLayout(
     viewState: PlaybackViewState,
-    onIntent: (PlaybackIntent) -> Unit
+    onIntent: (PlaybackIntent) -> Unit,
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -39,6 +41,7 @@ fun VerticalPlayerLayout(
         verticalArrangement = Arrangement.Center
     ) {
         ArtworkSection(
+            artworkUrl = viewState.playbackState.currentTrack?.artworkUrl,
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .aspectRatio(1f)
@@ -46,10 +49,11 @@ fun VerticalPlayerLayout(
 
         Spacer(modifier = Modifier.height(48.dp))
 
-        // All the complexity is now hidden inside this single composable
         PlayerInfoAndControls(
             viewState = viewState,
-            onIntent = onIntent
+            onIntent = onIntent,
+            onAlbumClick = onAlbumClick,
+            onArtistClick = onArtistClick,
         )
     }
 }
@@ -57,7 +61,9 @@ fun VerticalPlayerLayout(
 @Composable
 fun HorizontalPlayerLayout(
     viewState: PlaybackViewState,
-    onIntent: (PlaybackIntent) -> Unit
+    onIntent: (PlaybackIntent) -> Unit,
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -67,6 +73,7 @@ fun HorizontalPlayerLayout(
         horizontalArrangement = Arrangement.Center
     ) {
         ArtworkSection(
+            artworkUrl = viewState.playbackState.currentTrack?.artworkUrl,
             modifier = Modifier
                 .fillMaxHeight(0.75f)
                 .aspectRatio(1f)
@@ -78,7 +85,9 @@ fun HorizontalPlayerLayout(
             modifier = Modifier
                 .weight(1f),
             viewState = viewState,
-            onIntent = onIntent
+            onIntent = onIntent,
+            onAlbumClick = onAlbumClick,
+            onArtistClick = onArtistClick
         )
     }
 }
@@ -92,9 +101,12 @@ fun HorizontalPlayerLayout(
 private fun PlayerInfoAndControls(
     modifier: Modifier = Modifier,
     viewState: PlaybackViewState,
-    onIntent: (PlaybackIntent) -> Unit
+    onIntent: (PlaybackIntent) -> Unit,
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {}
 ) {
-    val currentTrack = viewState.playbackState.currentTrack!!
+    val currentTrack = viewState.playbackState.currentTrack
+        ?: return // If there's no track, don't display anything
 
     Column(modifier = modifier) {
         TrackInfoSection(
@@ -102,7 +114,9 @@ private fun PlayerInfoAndControls(
             artist = currentTrack.artist.name,
             album = currentTrack.album.title,
             isFavorite = currentTrack.isFavorite,
-            onFavoriteClick = { onIntent(PlaybackIntent.ToggleFavorite(currentTrack.id)) }
+            onFavoriteClick = { onIntent(PlaybackIntent.ToggleFavorite(currentTrack.id)) },
+            onAlbumClick = { onAlbumClick(currentTrack.album.id) },
+            onArtistClick = { onArtistClick(currentTrack.artist.id) },
         )
 
         Spacer(modifier = Modifier.weight(1f, fill = false))
@@ -112,7 +126,6 @@ private fun PlayerInfoAndControls(
             currentPosition = viewState.progress,
             onPositionChange = { onIntent(PlaybackIntent.SeekTo(viewState.getDurationFromProgress(it))) },
             currentTime = viewState.currentTime,
-            totalTime = viewState.totalTime,
             totalDuration = viewState.playbackState.totalDuration,
             isPlaying = viewState.playbackState.isPlaying
         )

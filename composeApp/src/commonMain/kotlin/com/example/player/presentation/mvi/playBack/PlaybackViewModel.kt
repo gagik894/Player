@@ -1,4 +1,4 @@
-package com.example.player.presentation.mvi
+package com.example.player.presentation.mvi.playBack
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,9 +8,21 @@ import com.example.player.domain.usecase.*
 import com.example.player.platform.createMediaNotificationManager
 import com.example.player.platform.getPlatformContext
 import kotlinx.coroutines.flow.*
+import com.example.player.domain.usecase.GetPlaybackStateUseCase
+import com.example.player.domain.usecase.PlayFromContextUseCase
+import com.example.player.domain.usecase.PlayPauseUseCase
+import com.example.player.domain.usecase.SeekToPositionUseCase
+import com.example.player.domain.usecase.SkipTrackUseCase
+import com.example.player.domain.usecase.ToggleFavoriteUseCase
+import com.example.player.domain.usecase.ToggleRepeatModeUseCase
+import com.example.player.domain.usecase.ToggleShuffleUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Duration
-
 
 
 sealed interface PlaybackIntent {
@@ -39,7 +51,7 @@ class PlaybackViewModel : ViewModel() {
     private val toggleShuffleUseCase = ToggleShuffleUseCase(playerRepository)
     private val toggleRepeatModeUseCase = ToggleRepeatModeUseCase(playerRepository)
     private val toggleFavoriteUseCase = ToggleFavoriteUseCase(musicRepository)
-    private val setQueueUseCase = SetQueueUseCase(playerRepository)
+    private val playFromContextUseCase = PlayFromContextUseCase(playerRepository)
 
     // State
     private val _viewState = MutableStateFlow(PlaybackViewState())
@@ -167,8 +179,7 @@ class PlaybackViewModel : ViewModel() {
     private fun handlePlayTrack(track: Track, context: List<Track>) {
         viewModelScope.launch {
             try {
-                val startIndex = context.indexOf(track).coerceAtLeast(0)
-                setQueueUseCase(context, startIndex)
+                playFromContextUseCase(track.id, context)
             } catch (e: Exception) {
                 _viewState.update { it.copy(error = e.message) }
             }

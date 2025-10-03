@@ -22,5 +22,12 @@ data class Artist(
                 imageUrl = null,
                 bio = "Queen are a British rock band formed in London in 1970. Their classic line-up was Freddie Mercury (lead vocals, piano), Brian May (guitar, vocals), Roger Taylor (drums, vocals) and John Deacon (bass)."
             )
+        val sample2: Artist
+            get() = Artist(
+                id = "2",
+                name = "The Beatles",
+                imageUrl = null,
+                bio = "The Beatles were an English rock band formed in Liverpool in 1960. With a line-up comprising John Lennon, Paul McCartney, George Harrison and Ringo Starr, they are regarded as the most influential band of all time."
+            )
     }
 }

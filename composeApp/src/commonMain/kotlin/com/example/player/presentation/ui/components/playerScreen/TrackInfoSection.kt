@@ -1,5 +1,6 @@
-package com.example.player.presentation.ui.components
+package com.example.player.presentation.ui.components.playerScreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,8 @@ fun TrackInfoSection(
     album: String? = null,
     isFavorite: Boolean = false,
     onFavoriteClick: () -> Unit = {},
+    onArtistClick: () -> Unit = {},
+    onAlbumClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -53,19 +56,27 @@ fun TrackInfoSection(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            SelectionContainer {
+            SelectionContainer(
+                modifier.clickable {
+                    onArtistClick()
+                }
+            ) {
                 Text(
                     text = artist,
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
 
             if (album != null) {
                 Spacer(modifier = Modifier.height(2.dp))
-                SelectionContainer {
+                SelectionContainer(
+                    modifier.clickable {
+                        onAlbumClick()
+                    }
+                ) {
                     Text(
                         text = album,
                         style = MaterialTheme.typography.bodyMedium,

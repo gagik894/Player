@@ -4,7 +4,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.QueueMusic
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -15,16 +19,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.player.presentation.mvi.PlaybackIntent
-import com.example.player.presentation.mvi.PlaybackViewModel
-import com.example.player.presentation.mvi.PlaybackViewState
-import com.example.player.presentation.mvi.QueueViewModel
+import com.example.player.presentation.mvi.playBack.PlaybackIntent
+import com.example.player.presentation.mvi.playBack.PlaybackViewModel
+import com.example.player.presentation.mvi.playBack.PlaybackViewState
+import com.example.player.presentation.mvi.queue.QueueViewModel
 import com.example.player.presentation.theme.PlayerTheme
-import com.example.player.presentation.ui.components.PlayerTopBar
-import com.example.player.presentation.ui.components.QueueOverlay
 import com.example.player.presentation.ui.components.common.EmptyState
 import com.example.player.presentation.ui.components.common.ErrorState
 import com.example.player.presentation.ui.components.common.LoadingState
+import com.example.player.presentation.ui.components.common.PlayerTopAppBar
+import com.example.player.presentation.ui.components.playerScreen.QueueOverlay
 import com.example.player.presentation.ui.layouts.HorizontalPlayerLayout
 import com.example.player.presentation.ui.layouts.VerticalPlayerLayout
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -34,6 +38,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun PlayerScreen(
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit = {},
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {},
     playbackViewModel: PlaybackViewModel,
     queueViewModel: QueueViewModel
 ) {
@@ -45,9 +51,14 @@ fun PlayerScreen(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                PlayerTopBar(
-                    onNavigateBack = onNavigateBack,
-                    onQueueClicked = { isQueueVisible = true }
+                PlayerTopAppBar(
+                    title = viewState.playbackState.currentTrack?.title ?: "Player",
+                    onBack = onNavigateBack,
+                    actions = {
+                        IconButton(onClick = { isQueueVisible = true }) {
+                            Icon(Icons.AutoMirrored.Filled.QueueMusic, contentDescription = "Queue")
+                        }
+                    }
                 )
             }
         ) { paddingValues ->
@@ -74,6 +85,8 @@ fun PlayerScreen(
                 else -> PlayerContent(
                     viewState = viewState,
                     onIntent = playbackViewModel::handleIntent,
+                    onAlbumClick = onAlbumClick,
+                    onArtistClick = onArtistClick,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
@@ -105,6 +118,8 @@ private fun PlayerContent(
     modifier: Modifier = Modifier,
     viewState: PlaybackViewState,
     onIntent: (PlaybackIntent) -> Unit,
+    onAlbumClick: (String) -> Unit = {},
+    onArtistClick: (String) -> Unit = {}
 ) {
     Surface(
         modifier = modifier,
@@ -116,12 +131,16 @@ private fun PlayerContent(
             if (isPortrait) {
                 VerticalPlayerLayout(
                     viewState = viewState,
-                    onIntent = onIntent
+                    onIntent = onIntent,
+                    onAlbumClick = onAlbumClick,
+                    onArtistClick = onArtistClick
                 )
             } else {
                 HorizontalPlayerLayout(
                     viewState = viewState,
-                    onIntent = onIntent
+                    onIntent = onIntent,
+                    onAlbumClick = onAlbumClick,
+                    onArtistClick = onArtistClick
                 )
             }
         }

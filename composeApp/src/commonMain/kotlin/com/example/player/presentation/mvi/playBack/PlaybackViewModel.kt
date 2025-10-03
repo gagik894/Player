@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.player.di.RepositoryModule
 import com.example.player.domain.model.Track
 import com.example.player.domain.usecase.GetPlaybackStateUseCase
+import com.example.player.domain.usecase.PlayFromContextUseCase
 import com.example.player.domain.usecase.PlayPauseUseCase
 import com.example.player.domain.usecase.SeekToPositionUseCase
-import com.example.player.domain.usecase.SetQueueUseCase
 import com.example.player.domain.usecase.SkipTrackUseCase
 import com.example.player.domain.usecase.ToggleFavoriteUseCase
 import com.example.player.domain.usecase.ToggleRepeatModeUseCase
@@ -46,7 +46,7 @@ class PlaybackViewModel : ViewModel() {
     private val toggleShuffleUseCase = ToggleShuffleUseCase(playerRepository)
     private val toggleRepeatModeUseCase = ToggleRepeatModeUseCase(playerRepository)
     private val toggleFavoriteUseCase = ToggleFavoriteUseCase(musicRepository)
-    private val setQueueUseCase = SetQueueUseCase(playerRepository)
+    private val playFromContextUseCase = PlayFromContextUseCase(playerRepository)
 
     // State
     private val _viewState = MutableStateFlow(PlaybackViewState())
@@ -173,8 +173,7 @@ class PlaybackViewModel : ViewModel() {
     private fun handlePlayTrack(track: Track, context: List<Track>) {
         viewModelScope.launch {
             try {
-                val startIndex = context.indexOf(track).coerceAtLeast(0)
-                setQueueUseCase(context, startIndex)
+                playFromContextUseCase(track.id, context)
             } catch (e: Exception) {
                 _viewState.update { it.copy(error = e.message) }
             }

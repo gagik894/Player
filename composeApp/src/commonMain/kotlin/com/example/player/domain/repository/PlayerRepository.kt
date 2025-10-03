@@ -17,4 +17,5 @@ interface PlayerRepository {
     suspend fun skipToPrevious()
     suspend fun toggleShuffle()
     suspend fun setRepeatMode(mode: RepeatMode)
+    suspend fun playFromContext(trackId: String, tracks: List<Track>)
 }

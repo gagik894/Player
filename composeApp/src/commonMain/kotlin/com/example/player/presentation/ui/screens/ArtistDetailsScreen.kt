@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -19,10 +20,8 @@ import com.example.player.presentation.mvi.ArtistDetailsViewModel
 import com.example.player.presentation.mvi.PlaybackIntent
 import com.example.player.presentation.mvi.PlaybackViewModel
 import com.example.player.presentation.ui.components.common.AlbumCard
-import com.example.player.presentation.ui.layouts.GenericDetailScreen
 import com.example.player.presentation.ui.components.common.TrackListItem
-import com.example.player.presentation.theme.PlayerTheme
-import org.jetbrains.compose.ui.tooling.preview.Preview
+import com.example.player.presentation.ui.layouts.GenericDetailScreen
 
 @Composable
 fun AlbumsRow(
@@ -35,7 +34,6 @@ fun AlbumsRow(
             Text(
                 text = "Albums",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(12.dp))
             LazyRow(
@@ -77,14 +75,13 @@ fun ArtistDetailsScreen(
             // Albums section
             AlbumsRow(
                 albums = state.albums,
-                onAlbumClick = onAlbumClick
+                onAlbumClick = onAlbumClick,
+                modifier = Modifier.padding(bottom = 24.dp)
             )
-            Spacer(modifier = Modifier.height(24.dp))
             // Tracks section title
             Text(
                 text = "Songs",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(12.dp))
         },
@@ -99,12 +96,4 @@ fun ArtistDetailsScreen(
         },
         modifier = modifier
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ArtistDetailsScreenPreview() {
-    PlayerTheme {
-        // This would require a mock viewModel for preview
-    }
 }

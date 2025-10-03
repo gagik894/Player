@@ -31,12 +31,12 @@ import com.example.player.presentation.ui.components.common.PlayerTopAppBar
 fun <T> GenericListScreen(
     title: String,
     filteredItems: List<T>,
-    searchQuery: String,
+    searchQuery: String? = null,
     isLoading: Boolean,
     error: String? = null,
-    searchPlaceholder: String,
+    searchPlaceholder: String? = null,
     emptyMessage: String,
-    onSearchQueryChange: (String) -> Unit,
+    onSearchQueryChange: ((String) -> Unit)?,
     itemKey: (T) -> String,
     itemContent: @Composable (T) -> Unit,
     onBack: (() -> Unit)? = null,
@@ -66,12 +66,14 @@ fun <T> GenericListScreen(
                         .fillMaxSize()
                         .padding(horizontal = horizontalPadding)
                 ) {
-                    SearchBar(
-                        query = searchQuery,
-                        onQueryChange = onSearchQueryChange,
-                        placeholder = searchPlaceholder,
-                        modifier = Modifier.padding(vertical = 16.dp)
-                    )
+                    if (onSearchQueryChange != null){
+                        SearchBar(
+                            query = searchQuery ?: "",
+                            onQueryChange = onSearchQueryChange,
+                            placeholder = searchPlaceholder ?: "Search...",
+                            modifier = Modifier.padding(vertical = 16.dp)
+                        )
+                    }
 
                     when {
                         isLoading -> {
@@ -97,7 +99,7 @@ fun <T> GenericListScreen(
                             }
                         }
 
-                        filteredItems.isEmpty() && searchQuery.isNotBlank() -> {
+                        filteredItems.isEmpty() && !searchQuery.isNullOrEmpty() -> {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center

@@ -30,8 +30,9 @@ fun GenericDetailScreen(
     tracks: List<Track>,
     isLoading: Boolean,
     error: String? = null,
-    onBackClick: () -> Unit,
+    onBackClick: (() -> Unit)?,
     trackContent: @Composable (Track) -> Unit,
+    topBarActions: @Composable (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     headerContent: @Composable (() -> Unit)? = null
 ) {
@@ -39,7 +40,8 @@ fun GenericDetailScreen(
         topBar = {
             PlayerTopAppBar(
                 title = title,
-                onBack = onBackClick
+                onBack = onBackClick,
+                actions = topBarActions
             )
         },
         modifier = modifier

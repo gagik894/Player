@@ -1,24 +1,21 @@
 package com.example.player.presentation.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LibraryMusic
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.player.navigation.PlayerDestination
@@ -28,11 +25,9 @@ import com.example.player.presentation.mvi.HomeViewState
 import com.example.player.presentation.mvi.PlaybackIntent
 import com.example.player.presentation.mvi.PlaybackViewModel
 import com.example.player.presentation.theme.PlayerTheme
-import com.example.player.presentation.ui.components.common.ErrorState
-import com.example.player.presentation.ui.components.common.LoadingState
 import com.example.player.presentation.ui.components.common.TrackListItem
 import com.example.player.presentation.ui.components.homeScreen.FavoritesRow
-import com.example.player.presentation.ui.components.homeScreen.HomeTopBar
+import com.example.player.presentation.ui.layouts.GenericDetailScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,40 +41,20 @@ fun HomeScreen(
     val homeViewState by homeViewModel.viewState.collectAsStateWithLifecycle()
     val playbackViewState by playbackViewModel.viewState.collectAsStateWithLifecycle()
 
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            HomeTopBar(
-                onArtistsClick = { onNavigateTo(PlayerDestination.Artists) },
-                onPlaylistsClick = { onNavigateTo(PlayerDestination.Playlists) }
-            )
+    HomeContent(
+        homeViewState = homeViewState,
+        playbackViewState = playbackViewState,
+        onHomeIntent = homeViewModel::handleIntent,
+        onPlaybackIntent = playbackViewModel::handleIntent,
+        onArtistsClick = {
+            onNavigateTo(PlayerDestination.Artists)
         },
-    ) { paddingValues ->
-        when {
-            homeViewState.isLoading -> LoadingState(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            )
-
-            homeViewState.error != null -> ErrorState(
-                error = homeViewState.error ?: "Unknown Error",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            )
-
-            else -> HomeContent(
-                homeViewState = homeViewState,
-                playbackViewState = playbackViewState,
-                onHomeIntent = homeViewModel::handleIntent,
-                onPlaybackIntent = playbackViewModel::handleIntent,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            )
-        }
-    }
+        onPlaylistsClick = {
+            onNavigateTo(PlayerDestination.Playlists)
+        },
+        modifier = modifier
+            .fillMaxSize()
+    )
 }
 
 @Composable
@@ -89,77 +64,68 @@ private fun HomeContent(
     playbackViewState: com.example.player.presentation.mvi.PlaybackViewState,
     onHomeIntent: (HomeIntent) -> Unit,
     onPlaybackIntent: (PlaybackIntent) -> Unit,
+    onArtistsClick: () -> Unit = {},
+    onPlaylistsClick: () -> Unit = {}
 ) {
-    Surface(
-        modifier = modifier,
-        color = MaterialTheme.colorScheme.background
-    ) {
-        BoxWithConstraints {
-            val isPortrait = maxHeight > maxWidth
-            val tracks = homeViewState.filteredTracks.ifEmpty { homeViewState.tracks }
+    val tracks = homeViewState.filteredTracks.ifEmpty { homeViewState.tracks }
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    horizontal = if (isPortrait) 16.dp else 24.dp,
-                    vertical = 16.dp
-                ),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                if (
-                    homeViewState.favorites.isNotEmpty()
-                ) {
-                    item {
-                        Text(
-                            text = "Liked Songs",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(
-                                horizontal = if (isPortrait) 4.dp else 8.dp,
-                                vertical = 8.dp
-                            )
-                        )
-                    }
-
-                    item {
-                        FavoritesRow(
-                            tracks = homeViewState.favorites,
-                            onTrackClick = { track ->
-                                onPlaybackIntent(PlaybackIntent.PlayTrackFromContext(track, homeViewState.favorites))
-                            }
-                        )
-                    }
-                }
-                item {
-                    Text(
-                        text = "All Songs",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = if (!isPortrait) 8.dp else 4.dp)
-                    )
-                }
-
-                items(tracks) { track ->
-                    TrackListItem(
-                        track = track,
-                        isSelected = playbackViewState.playbackState.currentTrack?.id == track.id,
-                        isPlaying = playbackViewState.playbackState.isPlaying,
-                        onClick = {
-                            onPlaybackIntent(PlaybackIntent.PlayTrackFromContext(track, tracks))
-                        },
-                        onFavoriteClick = {
-                            onHomeIntent(HomeIntent.ToggleFavorite(track.id))
-                        }
-                    )
-                }
-
-                // Bottom padding for the mini player
-                item {
-                    Spacer(modifier = Modifier.height(80.dp))
-                }
+    GenericDetailScreen(
+        title = "Home",
+        tracks = tracks,
+        isLoading = homeViewState.isLoading,
+        error = homeViewState.error,
+        onBackClick = null,
+        topBarActions = {
+            IconButton(onClick = onArtistsClick) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Artists"
+                )
             }
-        }
-    }
+            IconButton(onClick = onPlaylistsClick) {
+                Icon(
+                    imageVector = Icons.Default.LibraryMusic,
+                    contentDescription = "Playlists"
+                )
+            }
+        },
+        headerContent = {
+            // Favorites section
+            FavoritesRow(
+                tracks = homeViewState.favorites,
+                onTrackClick = { track ->
+                    onPlaybackIntent(
+                        PlaybackIntent.PlayTrackFromContext(
+                            track,
+                            homeViewState.favorites
+                        )
+                    )
+                },
+                modifier = Modifier.padding(bottom = 24.dp)
+            )
+            // Tracks section title
+            Text(
+                text = "Songs",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        },
+        trackContent = { track ->
+            TrackListItem(
+                track = track,
+                isSelected = playbackViewState.playbackState.currentTrack?.id == track.id,
+                isPlaying = playbackViewState.playbackState.isPlaying,
+                onClick = {
+                    onPlaybackIntent(PlaybackIntent.PlayTrackFromContext(track, tracks))
+                },
+                onFavoriteClick = {
+                    onHomeIntent(HomeIntent.ToggleFavorite(track.id))
+                }
+            )
+        },
+        modifier = modifier
+    )
 }
 
 

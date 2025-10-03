@@ -66,7 +66,7 @@ fun <T> GenericListScreen(
                         .fillMaxSize()
                         .padding(horizontal = horizontalPadding)
                 ) {
-                    if (onSearchQueryChange != null){
+                    if (onSearchQueryChange != null) {
                         SearchBar(
                             query = searchQuery ?: "",
                             onQueryChange = onSearchQueryChange,

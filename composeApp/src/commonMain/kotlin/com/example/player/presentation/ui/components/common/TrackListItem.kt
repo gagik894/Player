@@ -2,12 +2,21 @@ package com.example.player.presentation.ui.components.common
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -18,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.player.domain.model.Track
 import com.example.player.presentation.theme.PlayerTheme
+import com.example.player.presentation.util.toTimeString
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -111,7 +121,7 @@ fun TrackListItem(
                     )
                 } else {
                     Text(
-                        text =  "3:45",
+                        text = track.duration.toTimeString(),
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(end = 8.dp)
                     )

@@ -46,7 +46,6 @@ fun VerticalPlayerLayout(
 
         Spacer(modifier = Modifier.height(48.dp))
 
-        // All the complexity is now hidden inside this single composable
         PlayerInfoAndControls(
             viewState = viewState,
             onIntent = onIntent
@@ -94,7 +93,8 @@ private fun PlayerInfoAndControls(
     viewState: PlaybackViewState,
     onIntent: (PlaybackIntent) -> Unit
 ) {
-    val currentTrack = viewState.playbackState.currentTrack!!
+    val currentTrack = viewState.playbackState.currentTrack
+        ?: return // If there's no track, don't display anything
 
     Column(modifier = modifier) {
         TrackInfoSection(
@@ -112,7 +112,6 @@ private fun PlayerInfoAndControls(
             currentPosition = viewState.progress,
             onPositionChange = { onIntent(PlaybackIntent.SeekTo(viewState.getDurationFromProgress(it))) },
             currentTime = viewState.currentTime,
-            totalTime = viewState.totalTime,
             totalDuration = viewState.playbackState.totalDuration,
             isPlaying = viewState.playbackState.isPlaying
         )

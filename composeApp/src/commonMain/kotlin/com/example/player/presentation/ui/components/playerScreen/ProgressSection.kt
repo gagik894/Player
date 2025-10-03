@@ -24,13 +24,14 @@ import com.example.player.presentation.util.toTimeString
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun ProgressSection(
     currentPosition: Float,
     onPositionChange: (Float) -> Unit,
     currentTime: String,
-    totalTime: String,
     totalDuration: Duration = Duration.ZERO,
     isPlaying: Boolean = false,
     modifier: Modifier = Modifier
@@ -105,7 +106,7 @@ fun ProgressSection(
             )
 
             Text(
-                text = totalTime,
+                text = totalDuration.toTimeString(),
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Medium
             )
@@ -121,7 +122,7 @@ private fun ProgressSectionPreview() {
             currentPosition = 0.45f,
             onPositionChange = {},
             currentTime = "2:15",
-            totalTime = "5:55",
+            totalDuration = 2.minutes + 30.seconds,
             isPlaying = true
         )
     }

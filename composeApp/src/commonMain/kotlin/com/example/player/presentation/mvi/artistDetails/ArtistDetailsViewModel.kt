@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.player.domain.usecase.GetAlbumsByArtistUseCase
 import com.example.player.domain.usecase.GetArtistByIdUseCase
 import com.example.player.domain.usecase.GetTracksByArtistUseCase
+import com.example.player.domain.usecase.ToggleFavoriteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +15,8 @@ class ArtistDetailsViewModel(
     private val artistId: String,
     private val getArtistByIdUseCase: GetArtistByIdUseCase,
     private val getAlbumsByArtistUseCase: GetAlbumsByArtistUseCase,
-    private val getTracksByArtistUseCase: GetTracksByArtistUseCase
+    private val getTracksByArtistUseCase: GetTracksByArtistUseCase,
+    private val toggleFavoriteUseCase: ToggleFavoriteUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ArtistDetailsViewState())
@@ -22,6 +24,12 @@ class ArtistDetailsViewModel(
 
     init {
         loadArtistData()
+    }
+
+    fun handleToggleFavorite(trackId: String) {
+        viewModelScope.launch {
+            toggleFavoriteUseCase(trackId)
+        }
     }
 
     private fun loadArtistData() {

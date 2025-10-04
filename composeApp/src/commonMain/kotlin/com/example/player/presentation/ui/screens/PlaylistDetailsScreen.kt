@@ -29,6 +29,7 @@ fun PlaylistDetailsScreen(
         playbackState = playbackState,
         onPlaybackIntent = playbackViewModel::handleIntent,
         onBackClick = onBackClick,
+        onFavoriteClick = viewModel::handleToggleFavorite,
         modifier = modifier
     )
 }
@@ -38,6 +39,7 @@ private fun PlaylistDetailsScreenContent(
     state: PlaylistDetailsViewState,
     playbackState: PlaybackViewState,
     onPlaybackIntent: (PlaybackIntent) -> Unit,
+    onFavoriteClick: (String) -> Unit = {},
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -60,7 +62,7 @@ private fun PlaylistDetailsScreenContent(
                 },
                 isSelected = playbackState.playbackState.currentTrack?.id == track.id,
                 isPlaying = playbackState.isPlaying,
-                onFavoriteClick = { },
+                onFavoriteClick = { onFavoriteClick(track.id) },
             )
         },
         modifier = modifier

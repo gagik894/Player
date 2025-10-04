@@ -37,6 +37,7 @@ import com.example.player.domain.usecase.GetPlaylistByIdUseCase
 import com.example.player.domain.usecase.GetTracksByAlbumUseCase
 import com.example.player.domain.usecase.GetTracksByArtistUseCase
 import com.example.player.domain.usecase.GetTracksByPlaylistUseCase
+import com.example.player.domain.usecase.ToggleFavoriteUseCase
 import com.example.player.navigation.PlayerDestination
 import com.example.player.presentation.mvi.album.AlbumDetailsViewModel
 import com.example.player.presentation.mvi.artistDetails.ArtistDetailsViewModel
@@ -75,7 +76,11 @@ fun App() {
         val navController = rememberNavController()
         val playbackViewModel = remember { PlaybackViewModel() }
         val homeViewModel = remember { HomeViewModel() }
-        val queueViewModel = remember { QueueViewModel() }
+        val queueViewModel = remember {
+            QueueViewModel(
+                toggleFavoriteUseCase = ToggleFavoriteUseCase(RepositoryModule.musicRepository)
+            )
+        }
 
         val currentDestination by navController.currentBackStackEntryAsState()
         val currentRoute = currentDestination?.destination?.route
@@ -200,7 +205,8 @@ fun App() {
                             artistId = artistDetail.artistId,
                             getArtistByIdUseCase = GetArtistByIdUseCase(RepositoryModule.musicRepository),
                             getAlbumsByArtistUseCase = GetAlbumsByArtistUseCase(RepositoryModule.musicRepository),
-                            getTracksByArtistUseCase = GetTracksByArtistUseCase(RepositoryModule.musicRepository)
+                            getTracksByArtistUseCase = GetTracksByArtistUseCase(RepositoryModule.musicRepository),
+                            toggleFavoriteUseCase = ToggleFavoriteUseCase(RepositoryModule.musicRepository)
                         )
                     }
 
@@ -223,7 +229,8 @@ fun App() {
                         PlaylistDetailsViewModel(
                             playlistId = playlistDetail.playlistId,
                             getPlaylistByIdUseCase = GetPlaylistByIdUseCase(RepositoryModule.musicRepository),
-                            getTracksByPlaylistUseCase = GetTracksByPlaylistUseCase(RepositoryModule.musicRepository)
+                            getTracksByPlaylistUseCase = GetTracksByPlaylistUseCase(RepositoryModule.musicRepository),
+                            toggleFavoriteUseCase = ToggleFavoriteUseCase(RepositoryModule.musicRepository)
                         )
                     }
 

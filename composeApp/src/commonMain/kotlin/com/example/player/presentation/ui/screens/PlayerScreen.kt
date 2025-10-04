@@ -107,7 +107,7 @@ fun PlayerScreen(
                 isQueueVisible = false
             },
             onFavoriteClick = { track ->
-                playbackViewModel.handleIntent(PlaybackIntent.ToggleFavorite(track.id))
+                queueViewModel.handleToggleFavorite(track.id)
             }
         )
     }

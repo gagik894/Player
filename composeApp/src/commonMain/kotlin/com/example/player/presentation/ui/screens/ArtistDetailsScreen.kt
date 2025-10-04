@@ -40,6 +40,7 @@ fun ArtistDetailsScreen(
         onPlaybackIntent = playbackViewModel::handleIntent,
         onBackClick = onBackClick,
         onAlbumClick = onAlbumClick,
+        onFavoriteClick = viewModel::handleToggleFavorite,
         modifier = modifier
     )
 }
@@ -52,6 +53,7 @@ private fun ArtistDetailsContent(
     onPlaybackIntent: (PlaybackIntent) -> Unit,
     onBackClick: () -> Unit,
     onAlbumClick: (Album) -> Unit = {},
+    onFavoriteClick: (String) -> Unit = {},
 ) {
     GenericDetailScreen(
         title = state.artist?.name ?: "Artist",
@@ -86,7 +88,9 @@ private fun ArtistDetailsContent(
                 },
                 isSelected = playbackState.playbackState.currentTrack?.id == track.id,
                 isPlaying = playbackState.isPlaying,
-                onFavoriteClick = { },
+                onFavoriteClick = {
+                    onFavoriteClick(track.id)
+                },
             )
         },
         modifier = modifier

@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.example.player.presentation.mvi.playBack.PlaybackIntent
-import com.example.player.presentation.mvi.playBack.PlaybackViewModel
-import com.example.player.presentation.mvi.playBack.PlaybackViewState
 import com.example.player.presentation.mvi.playListDetails.PlaylistDetailsViewModel
 import com.example.player.presentation.mvi.playListDetails.PlaylistDetailsViewState
+import com.example.player.presentation.mvi.playback.PlaybackIntent
+import com.example.player.presentation.mvi.playback.PlaybackViewModel
+import com.example.player.presentation.mvi.playback.PlaybackViewState
 import com.example.player.presentation.theme.PlayerTheme
 import com.example.player.presentation.ui.components.common.TrackListItem
 import com.example.player.presentation.ui.layouts.GenericDetailScreen

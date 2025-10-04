@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import com.example.player.domain.model.Album
 import com.example.player.presentation.mvi.artistDetails.ArtistDetailsViewModel
 import com.example.player.presentation.mvi.artistDetails.ArtistDetailsViewState
-import com.example.player.presentation.mvi.playBack.PlaybackIntent
-import com.example.player.presentation.mvi.playBack.PlaybackViewModel
-import com.example.player.presentation.mvi.playBack.PlaybackViewState
+import com.example.player.presentation.mvi.playback.PlaybackIntent
+import com.example.player.presentation.mvi.playback.PlaybackViewModel
+import com.example.player.presentation.mvi.playback.PlaybackViewState
 import com.example.player.presentation.theme.PlayerTheme
 import com.example.player.presentation.ui.components.artistDetailsScreen.AlbumsRow
 import com.example.player.presentation.ui.components.common.TrackListItem

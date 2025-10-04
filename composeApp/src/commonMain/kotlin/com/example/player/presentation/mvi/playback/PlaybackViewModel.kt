@@ -1,4 +1,4 @@
-package com.example.player.presentation.mvi.playBack
+package com.example.player.presentation.mvi.playback
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +12,8 @@ import com.example.player.domain.usecase.SkipTrackUseCase
 import com.example.player.domain.usecase.ToggleFavoriteUseCase
 import com.example.player.domain.usecase.ToggleRepeatModeUseCase
 import com.example.player.domain.usecase.ToggleShuffleUseCase
+import com.example.player.platform.createMediaNotificationManager
+import com.example.player.platform.getPlatformContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,6 +39,7 @@ class PlaybackViewModel : ViewModel() {
     // Shared repositories
     private val playerRepository = RepositoryModule.playerRepository
     private val musicRepository = RepositoryModule.musicRepository
+    private val notificationManager = createMediaNotificationManager(getPlatformContext())
 
     // Use cases
     private val getPlaybackStateUseCase = GetPlaybackStateUseCase(playerRepository)
@@ -86,6 +89,7 @@ class PlaybackViewModel : ViewModel() {
                             error = null
                         )
                     }
+                    notificationManager.showOrUpdate(playbackState)
                 }
         }
     }
@@ -188,5 +192,10 @@ class PlaybackViewModel : ViewModel() {
                 _viewState.update { it.copy(error = e.message) }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        notificationManager.dismiss()
     }
 }

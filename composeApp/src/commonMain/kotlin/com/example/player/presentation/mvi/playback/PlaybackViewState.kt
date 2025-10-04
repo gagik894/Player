@@ -1,4 +1,4 @@
-package com.example.player.presentation.mvi.playBack
+package com.example.player.presentation.mvi.playback
 
 import com.example.player.domain.model.PlaybackState
 import com.example.player.presentation.util.toTimeString

@@ -29,6 +29,6 @@ class NotificationActionReceiver : BroadcastReceiver() {
     companion object {
         const val ACTION_PLAY_PAUSE = "media.PLAY_PAUSE"
         const val ACTION_NEXT = "media.NEXT"
-        const val ACTION_PREVIOUS = ".media.PREVIOUS"
+        const val ACTION_PREVIOUS = "media.PREVIOUS"
     }
 }

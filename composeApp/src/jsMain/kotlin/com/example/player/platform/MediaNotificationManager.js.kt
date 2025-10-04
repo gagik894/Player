@@ -1,7 +1,7 @@
 package com.example.player.platform
 
 import com.example.player.domain.model.PlaybackState
-import com.example.player.presentation.mvi.PlaybackIntent
+import com.example.player.presentation.mvi.playback.PlaybackIntent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
